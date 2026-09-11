@@ -17,6 +17,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/nerufuyo/hyper-island/actions/workflows/android-build.yml"><img src="https://github.com/nerufuyo/hyper-island/actions/workflows/android-build.yml/badge.svg" alt="Android CI" /></a>
   <img src="https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
   <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
   <img src="https://img.shields.io/badge/Material%20Design-757575?style=for-the-badge&logo=material-design&logoColor=white" alt="Material Design" />

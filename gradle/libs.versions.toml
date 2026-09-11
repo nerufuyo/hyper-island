@@ -18,6 +18,7 @@ composeBom = "2026.05.01"
 materialIconsExtended = "1.7.8"
 ui = "1.11.2"
 roomCompiler = "2.8.4"
+playServicesLocation = "21.4.0"
 roomRuntime = "2.8.4"
 roomKtx = "2.8.4"
 appcompat = "1.7.1"
@@ -29,6 +30,7 @@ lifecycleViewmodelNav3 = "2.10.0"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 api = { module = "dev.rikka.shizuku:api", version.ref = "api" }
 haze = { group = "dev.chrisbanes.haze", name = "haze", version.ref = "haze" }
 haze-materials = { group = "dev.chrisbanes.haze", name = "haze-materials", version.ref = "haze" }

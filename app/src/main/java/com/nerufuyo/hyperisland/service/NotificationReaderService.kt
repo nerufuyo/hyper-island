@@ -62,6 +62,7 @@ class NotificationReaderService : NotificationListenerService() {
     companion object {
         const val ACTION_RELOAD_THEME = "com.nerufuyo.hyperisland.ACTION_RELOAD_THEME"
         const val ACTION_PERFORM_MIGRATION = "com.nerufuyo.hyperisland.ACTION_PERFORM_MIGRATION"
+        const val ACTION_GEOFENCE_TRANSITION = "com.nerufuyo.hyperisland.ACTION_GEOFENCE_TRANSITION"
 
         /**
          * Pure time-window check used by SCHEDULE-type Mute Profiles, pulled out so it's
@@ -86,7 +87,8 @@ class NotificationReaderService : NotificationListenerService() {
             profiles: List<com.nerufuyo.hyperisland.data.db.MuteProfile>,
             nowMinutes: Int,
             foregroundPackage: String?,
-            connectedBluetoothAddresses: Set<String> = emptySet()
+            connectedBluetoothAddresses: Set<String> = emptySet(),
+            insideGeofenceIds: Set<String> = emptySet()
         ): List<com.nerufuyo.hyperisland.data.db.MuteProfile> {
             return profiles.filter { it.enabled }.filter { profile ->
                 when (profile.triggerType) {
@@ -100,6 +102,8 @@ class NotificationReaderService : NotificationListenerService() {
                     com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_BLUETOOTH ->
                         profile.triggerBluetoothAddress.isNotEmpty() &&
                             profile.triggerBluetoothAddress in connectedBluetoothAddresses
+                    com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_LOCATION ->
+                        profile.id in insideGeofenceIds
                     else -> false
                 }
             }
@@ -263,6 +267,75 @@ class NotificationReaderService : NotificationListenerService() {
     // devices don't tell you this - only ACL_CONNECTED/DISCONNECTED does.
     private val connectedBluetoothAddresses = ConcurrentHashMap.newKeySet<String>()
 
+    // Live "which geofences am I inside right now" for TRIGGER_LOCATION Mute Profiles, keyed
+    // by profile id (== the geofence's requestId). Updated from ACTION_GEOFENCE_TRANSITION in
+    // onStartCommand, since GeofencingClient delivers transitions by starting this service.
+    private val insideGeofenceIds = ConcurrentHashMap.newKeySet<String>()
+    private val geofencingClient by lazy { com.google.android.gms.location.LocationServices.getGeofencingClient(this) }
+    private var registeredGeofenceProfileIds: Set<String> = emptySet()
+
+    private fun geofencePendingIntent(): PendingIntent {
+        val intent = Intent(this, NotificationReaderService::class.java).apply {
+            action = ACTION_GEOFENCE_TRANSITION
+        }
+        return PendingIntent.getService(
+            this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        )
+    }
+
+    /**
+     * Re-registers geofences with Play Services whenever the Mute Profile list changes, so the
+     * live set always matches what's actually enabled. No-ops (and clears state) if location
+     * permissions aren't granted - same graceful-degradation approach as Usage Access/Bluetooth.
+     */
+    private fun syncGeofences(profiles: List<com.nerufuyo.hyperisland.data.db.MuteProfile>) {
+        if (!com.nerufuyo.hyperisland.util.isFineLocationGranted(this) ||
+            !com.nerufuyo.hyperisland.util.isBackgroundLocationGranted(this)
+        ) {
+            registeredGeofenceProfileIds = emptySet()
+            return
+        }
+
+        val locationProfiles = profiles.filter {
+            it.enabled && it.triggerType == com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_LOCATION
+        }
+        val desiredIds = locationProfiles.map { it.id }.toSet()
+        if (desiredIds == registeredGeofenceProfileIds) return
+
+        val pendingIntent = geofencePendingIntent()
+        try {
+            geofencingClient.removeGeofences(pendingIntent).addOnCompleteListener {
+                if (locationProfiles.isEmpty()) {
+                    registeredGeofenceProfileIds = emptySet()
+                    return@addOnCompleteListener
+                }
+                val geofences = locationProfiles.map { profile ->
+                    com.google.android.gms.location.Geofence.Builder()
+                        .setRequestId(profile.id)
+                        .setCircularRegion(profile.triggerLatitude, profile.triggerLongitude, profile.triggerRadiusMeters)
+                        .setExpirationDuration(com.google.android.gms.location.Geofence.NEVER_EXPIRE)
+                        .setTransitionTypes(
+                            com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_ENTER or
+                                com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_EXIT
+                        )
+                        .build()
+                }
+                val request = com.google.android.gms.location.GeofencingRequest.Builder()
+                    .setInitialTrigger(com.google.android.gms.location.GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                    .addGeofences(geofences)
+                    .build()
+                try {
+                    geofencingClient.addGeofences(request, pendingIntent)
+                    registeredGeofenceProfileIds = desiredIds
+                } catch (e: SecurityException) {
+                    Log.e(TAG, "Missing location permission for geofencing", e)
+                }
+            }
+        } catch (e: SecurityException) {
+            Log.e(TAG, "Missing location permission to remove geofences", e)
+        }
+    }
+
     private val bluetoothReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java) ?: return
@@ -333,7 +406,10 @@ class NotificationReaderService : NotificationListenerService() {
         serviceScope.launch { preferences.autoDetectDndFlow.collectLatest { autoDetectDnd = it } }
         serviceScope.launch {
             com.nerufuyo.hyperisland.data.db.AppDatabase.getDatabase(applicationContext).muteProfileDao()
-                .getAllFlow().collectLatest { muteProfiles = it }
+                .getAllFlow().collectLatest { profiles ->
+                    muteProfiles = profiles
+                    syncGeofences(profiles)
+                }
         }
 
         // Listen for Theme Changes
@@ -392,8 +468,23 @@ class NotificationReaderService : NotificationListenerService() {
                     }
                 }
             }
+        } else if (intent?.action == ACTION_GEOFENCE_TRANSITION) {
+            handleGeofenceTransition(intent)
         }
         return START_STICKY
+    }
+
+    private fun handleGeofenceTransition(intent: Intent) {
+        val event = com.google.android.gms.location.GeofencingEvent.fromIntent(intent) ?: return
+        if (event.hasError()) {
+            Log.e(TAG, "Geofencing error code: ${event.errorCode}")
+            return
+        }
+        val ids = event.triggeringGeofences?.map { it.requestId } ?: emptyList()
+        when (event.geofenceTransition) {
+            com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_ENTER -> insideGeofenceIds.addAll(ids)
+            com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_EXIT -> insideGeofenceIds.removeAll(ids.toSet())
+        }
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
@@ -771,7 +862,9 @@ class NotificationReaderService : NotificationListenerService() {
         val needsForeground = enabled.any { it.triggerType == com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_APP_FOREGROUND }
         val foregroundPackage = if (needsForeground) getForegroundPackageName(this) else null
 
-        val active = activeProfiles(enabled, nowMinutes, foregroundPackage, connectedBluetoothAddresses.toSet())
+        val active = activeProfiles(
+            enabled, nowMinutes, foregroundPackage, connectedBluetoothAddresses.toSet(), insideGeofenceIds.toSet()
+        )
         return isMutedByProfiles(active, packageName)
     }
 

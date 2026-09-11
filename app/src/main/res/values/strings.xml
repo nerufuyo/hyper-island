@@ -659,6 +659,14 @@
     <string name="profile_editor_bluetooth_access_needed">Bluetooth triggers need the Nearby Devices permission</string>
     <string name="profile_editor_pick_device">Device that triggers this profile</string>
     <string name="profile_editor_no_devices">No paired Bluetooth devices found. Pair one in system Settings first.</string>
+    <string name="profile_editor_trigger_location">Location</string>
+    <string name="profile_editor_location_access_needed">Location triggers need precise location access</string>
+    <string name="profile_editor_background_location_needed">Also needs \"Allow all the time\" so it works when the app isn\'t open</string>
+    <string name="profile_editor_use_current_location">Use Current Location</string>
+    <string name="profile_editor_location_captured">Captured: %1$.4f, %2$.4f</string>
+    <string name="profile_editor_location_name">Place name</string>
+    <string name="profile_editor_location_name_placeholder">e.g. Home, Office</string>
+    <string name="profile_editor_radius">Radius</string>
     <string name="profile_editor_start_time">Start time</string>
     <string name="profile_editor_end_time">End time</string>
     <string name="profile_editor_pick_apps">Apps that trigger this profile</string>

@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.palette.ktx)
+    implementation(libs.play.services.location) // geofencing for location-triggered Mute Profiles
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

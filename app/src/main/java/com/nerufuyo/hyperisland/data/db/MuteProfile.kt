@@ -26,12 +26,19 @@ data class MuteProfile(
     // profile is actively muting. Comma-joined package names, empty = allows nothing through.
     val priorityApps: String = "",
     // Bluetooth MAC address, only used by TRIGGER_BLUETOOTH (e.g. car/headset connected).
-    val triggerBluetoothAddress: String = ""
+    val triggerBluetoothAddress: String = "",
+    // Geofence center + radius, only used by TRIGGER_LOCATION. Captured via "Use current
+    // location" (no map picker - that needs a Google Maps API key this app doesn't have).
+    val triggerLatitude: Double = 0.0,
+    val triggerLongitude: Double = 0.0,
+    val triggerRadiusMeters: Float = 150f,
+    val triggerLocationName: String = ""
 ) {
     companion object {
         const val TRIGGER_MANUAL = "MANUAL"
         const val TRIGGER_SCHEDULE = "SCHEDULE"
         const val TRIGGER_APP_FOREGROUND = "APP_FOREGROUND"
         const val TRIGGER_BLUETOOTH = "BLUETOOTH"
+        const val TRIGGER_LOCATION = "LOCATION"
     }
 }

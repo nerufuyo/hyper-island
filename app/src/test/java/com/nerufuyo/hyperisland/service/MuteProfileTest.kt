@@ -28,6 +28,10 @@ class MuteProfileTest {
         triggerBluetoothAddress = address
     )
 
+    private fun location(profileId: String = "5", enabled: Boolean = true) = MuteProfile(
+        id = profileId, name = "Location", enabled = enabled, triggerType = MuteProfile.TRIGGER_LOCATION
+    )
+
     // --- activeProfiles() ---
 
     @Test
@@ -71,6 +75,19 @@ class MuteProfileTest {
             NotificationReaderService.activeProfiles(profiles, 12 * 60, null, setOf("FF:FF:FF:FF:FF:FF")).isEmpty()
         )
         assertTrue(NotificationReaderService.activeProfiles(profiles, 12 * 60, null, emptySet()).isEmpty())
+    }
+
+    @Test
+    fun locationProfile_matchesOnlyWhenInsideGeofence() {
+        val profiles = listOf(location("home"))
+        assertEquals(
+            1,
+            NotificationReaderService.activeProfiles(profiles, 12 * 60, null, emptySet(), setOf("home")).size
+        )
+        assertTrue(
+            NotificationReaderService.activeProfiles(profiles, 12 * 60, null, emptySet(), setOf("office")).isEmpty()
+        )
+        assertTrue(NotificationReaderService.activeProfiles(profiles, 12 * 60, null, emptySet(), emptySet()).isEmpty())
     }
 
     // --- isMutedByProfiles() (priority apps / "Allowed Notifications") ---

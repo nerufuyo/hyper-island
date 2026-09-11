@@ -119,6 +119,8 @@ private fun ProfilePickerScreen(onPick: (MuteProfile) -> Unit) {
                         when (profile.triggerType) {
                             MuteProfile.TRIGGER_SCHEDULE -> R.string.profile_editor_trigger_schedule
                             MuteProfile.TRIGGER_APP_FOREGROUND -> R.string.profile_editor_trigger_app
+                            MuteProfile.TRIGGER_BLUETOOTH -> R.string.profile_editor_trigger_bluetooth
+                            MuteProfile.TRIGGER_LOCATION -> R.string.profile_editor_trigger_location
                             else -> R.string.profile_editor_trigger_manual
                         }
                     )

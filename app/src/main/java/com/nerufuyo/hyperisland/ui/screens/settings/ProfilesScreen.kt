@@ -16,6 +16,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Bedtime
+import androidx.compose.material.icons.outlined.Bluetooth
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.NotificationsPaused
 import androidx.compose.material.icons.outlined.SportsEsports
 import androidx.compose.material.icons.outlined.Tune
@@ -50,6 +52,8 @@ import kotlinx.coroutines.launch
 private fun iconFor(triggerType: String): ImageVector = when (triggerType) {
     MuteProfile.TRIGGER_SCHEDULE -> Icons.Outlined.Bedtime
     MuteProfile.TRIGGER_APP_FOREGROUND -> Icons.Outlined.SportsEsports
+    MuteProfile.TRIGGER_BLUETOOTH -> Icons.Outlined.Bluetooth
+    MuteProfile.TRIGGER_LOCATION -> Icons.Outlined.LocationOn
     else -> Icons.Outlined.NotificationsPaused
 }
 
@@ -62,6 +66,8 @@ private fun subtitleFor(profile: MuteProfile): String = when (profile.triggerTyp
         val count = profile.triggerApps.split(",").filter { it.isNotEmpty() }.size
         "$count app(s)"
     }
+    MuteProfile.TRIGGER_BLUETOOTH -> profile.triggerBluetoothAddress.ifEmpty { "No device set" }
+    MuteProfile.TRIGGER_LOCATION -> profile.triggerLocationName.ifEmpty { "No place set" }
     else -> "Manual"
 }
 

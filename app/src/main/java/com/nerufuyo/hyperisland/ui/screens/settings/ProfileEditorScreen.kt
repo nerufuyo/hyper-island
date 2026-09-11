@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,12 +18,15 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Bedtime
 import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.NotificationsPaused
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.SportsEsports
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +42,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,7 +60,10 @@ import com.nerufuyo.hyperisland.ui.AppListViewModel
 import com.nerufuyo.hyperisland.ui.components.AppListItem
 import com.nerufuyo.hyperisland.ui.components.ListOptionCard
 import com.nerufuyo.hyperisland.util.getBondedBluetoothDevices
+import com.nerufuyo.hyperisland.util.getCurrentLocation
+import com.nerufuyo.hyperisland.util.isBackgroundLocationGranted
 import com.nerufuyo.hyperisland.util.isBluetoothConnectGranted
+import com.nerufuyo.hyperisland.util.isFineLocationGranted
 import com.nerufuyo.hyperisland.util.isUsageAccessGranted
 import com.nerufuyo.hyperisland.util.openUsageAccessSettings
 import kotlinx.coroutines.launch
@@ -98,12 +107,27 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
     var hasUsageAccess by remember { mutableStateOf(isUsageAccessGranted(context)) }
     var hasBluetoothAccess by remember { mutableStateOf(isBluetoothConnectGranted(context)) }
     var selectedBluetoothAddress by remember { mutableStateOf("") }
+    var hasFineLocation by remember { mutableStateOf(isFineLocationGranted(context)) }
+    var hasBackgroundLocation by remember { mutableStateOf(isBackgroundLocationGranted(context)) }
+    var locationName by remember { mutableStateOf("") }
+    var triggerLatitude by remember { mutableDoubleStateOf(0.0) }
+    var triggerLongitude by remember { mutableDoubleStateOf(0.0) }
+    var triggerRadiusMeters by remember { mutableIntStateOf(150) }
+    var isFetchingLocation by remember { mutableStateOf(false) }
     val apps by appListViewModel.libraryAppsState.collectAsState()
     val bluetoothDevices = remember(hasBluetoothAccess) { getBondedBluetoothDevices(context) }
 
     val bluetoothPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { granted -> hasBluetoothAccess = granted }
+    )
+    val fineLocationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted -> hasFineLocation = granted }
+    )
+    val backgroundLocationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted -> hasBackgroundLocation = granted }
     )
 
     LaunchedEffect(profileId) {
@@ -117,6 +141,10 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                 selectedApps = p.triggerApps.split(",").filter { it.isNotEmpty() }.toSet()
                 selectedPriorityApps = p.priorityApps.split(",").filter { it.isNotEmpty() }.toSet()
                 selectedBluetoothAddress = p.triggerBluetoothAddress
+                locationName = p.triggerLocationName
+                triggerLatitude = p.triggerLatitude
+                triggerLongitude = p.triggerLongitude
+                triggerRadiusMeters = p.triggerRadiusMeters.toInt()
             }
         }
     }
@@ -134,7 +162,11 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                     scheduleEndMinutes = scheduleEnd,
                     triggerApps = selectedApps.joinToString(","),
                     priorityApps = selectedPriorityApps.joinToString(","),
-                    triggerBluetoothAddress = selectedBluetoothAddress
+                    triggerBluetoothAddress = selectedBluetoothAddress,
+                    triggerLocationName = locationName.trim(),
+                    triggerLatitude = triggerLatitude,
+                    triggerLongitude = triggerLongitude,
+                    triggerRadiusMeters = triggerRadiusMeters.toFloat()
                 )
             )
             onBack()
@@ -188,7 +220,8 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                     Triple(MuteProfile.TRIGGER_MANUAL, R.string.profile_editor_trigger_manual, Icons.Outlined.NotificationsPaused),
                     Triple(MuteProfile.TRIGGER_SCHEDULE, R.string.profile_editor_trigger_schedule, Icons.Outlined.Bedtime),
                     Triple(MuteProfile.TRIGGER_APP_FOREGROUND, R.string.profile_editor_trigger_app, Icons.Outlined.SportsEsports),
-                    Triple(MuteProfile.TRIGGER_BLUETOOTH, R.string.profile_editor_trigger_bluetooth, Icons.Outlined.Bluetooth)
+                    Triple(MuteProfile.TRIGGER_BLUETOOTH, R.string.profile_editor_trigger_bluetooth, Icons.Outlined.Bluetooth),
+                    Triple(MuteProfile.TRIGGER_LOCATION, R.string.profile_editor_trigger_location, Icons.Outlined.LocationOn)
                 )
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                     options.forEachIndexed { index, (type, labelRes, icon) ->
@@ -265,6 +298,97 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                                 style = MaterialTheme.typography.titleSmall,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )
+                        }
+                    }
+                    MuteProfile.TRIGGER_LOCATION -> {
+                        if (!hasFineLocation) {
+                            Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
+                                Text(
+                                    stringResource(R.string.profile_editor_location_access_needed),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.error,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                FilledTonalButton(onClick = {
+                                    fineLocationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                                }) {
+                                    Text(stringResource(R.string.grant))
+                                }
+                            }
+                        } else if (!hasBackgroundLocation) {
+                            Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
+                                Text(
+                                    stringResource(R.string.profile_editor_background_location_needed),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.error,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                FilledTonalButton(onClick = {
+                                    backgroundLocationPermissionLauncher.launch(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                                }) {
+                                    Text(stringResource(R.string.grant))
+                                }
+                            }
+                        } else {
+                            FilledTonalButton(
+                                onClick = {
+                                    isFetchingLocation = true
+                                    scope.launch {
+                                        val location = getCurrentLocation(context)
+                                        if (location != null) {
+                                            triggerLatitude = location.latitude
+                                            triggerLongitude = location.longitude
+                                        }
+                                        isFetchingLocation = false
+                                    }
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                if (isFetchingLocation) {
+                                    CircularProgressIndicator(modifier = Modifier.size(18.dp))
+                                } else {
+                                    Icon(Icons.Outlined.LocationOn, contentDescription = null)
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(stringResource(R.string.profile_editor_use_current_location))
+                                }
+                            }
+
+                            if (triggerLatitude != 0.0 || triggerLongitude != 0.0) {
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    stringResource(
+                                        R.string.profile_editor_location_captured,
+                                        triggerLatitude,
+                                        triggerLongitude
+                                    ),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                OutlinedTextField(
+                                    value = locationName,
+                                    onValueChange = { locationName = it },
+                                    label = { Text(stringResource(R.string.profile_editor_location_name)) },
+                                    placeholder = { Text(stringResource(R.string.profile_editor_location_name_placeholder)) },
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    stringResource(R.string.profile_editor_radius),
+                                    style = MaterialTheme.typography.titleSmall,
+                                    modifier = Modifier.padding(bottom = 4.dp)
+                                )
+                                Row {
+                                    listOf(100, 150, 300).forEach { radius ->
+                                        FilterChip(
+                                            selected = triggerRadiusMeters == radius,
+                                            onClick = { triggerRadiusMeters = radius },
+                                            label = { Text("${radius}m") },
+                                            modifier = Modifier.padding(end = 8.dp)
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                     else -> {}

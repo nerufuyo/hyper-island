@@ -4,9 +4,15 @@ import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.net.toUri
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 /**
  * Opens the hidden Xiaomi Autostart management screen.
@@ -145,5 +151,50 @@ fun getBondedBluetoothDevices(context: Context): List<Pair<String, String>> {
         emptyList()
     } catch (_: Exception) {
         emptyList()
+    }
+}
+
+/**
+ * Checks if precise location is granted - needed to capture a geofence center for
+ * Location-triggered Mute Profiles.
+ */
+fun isFineLocationGranted(context: Context): Boolean {
+    return androidx.core.content.ContextCompat.checkSelfPermission(
+        context, android.Manifest.permission.ACCESS_FINE_LOCATION
+    ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+}
+
+/**
+ * Checks if background location ("Allow all the time") is granted - required for geofence
+ * transitions to fire while the app isn't in the foreground, which for a mute trigger is
+ * basically always. On Android 11+ the system handles this via a Settings screen rather than
+ * the usual inline dialog, but the same RequestPermission() launcher call triggers either.
+ */
+fun isBackgroundLocationGranted(context: Context): Boolean {
+    return androidx.core.content.ContextCompat.checkSelfPermission(
+        context, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+    ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+}
+
+/**
+ * One-shot "where am I right now" for the profile editor's "Use current location" button.
+ * Returns null if fine location isn't granted or the fetch fails/times out - callers should
+ * just show an error rather than silently saving (0.0, 0.0).
+ */
+suspend fun getCurrentLocation(context: Context): Location? {
+    if (!isFineLocationGranted(context)) return null
+    return try {
+        suspendCancellableCoroutine { continuation ->
+            val client = LocationServices.getFusedLocationProviderClient(context)
+            val cancellationSource = CancellationTokenSource()
+            continuation.invokeOnCancellation { cancellationSource.cancel() }
+            client.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cancellationSource.token)
+                .addOnSuccessListener { location -> continuation.resume(location) }
+                .addOnFailureListener { continuation.resume(null) }
+        }
+    } catch (_: SecurityException) {
+        null
+    } catch (_: Exception) {
+        null
     }
 }

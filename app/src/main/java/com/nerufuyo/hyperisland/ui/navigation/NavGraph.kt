@@ -16,10 +16,11 @@ import com.nerufuyo.hyperisland.ui.screens.settings.ChangelogHistoryScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.EngineSettingsScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.GlobalBlocklistScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.GlobalSettingsScreen
-import com.nerufuyo.hyperisland.ui.screens.settings.FocusModeScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.ImportPreviewScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.InfoScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.IslandHistoryScreen
+import com.nerufuyo.hyperisland.ui.screens.settings.ProfileEditorScreen
+import com.nerufuyo.hyperisland.ui.screens.settings.ProfilesScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.IslandSettingsScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.LicensesScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.NavCustomizationScreen
@@ -80,14 +81,20 @@ fun mainNavGraph(
     entry<Screen.DndSettings> {
         com.nerufuyo.hyperisland.ui.screens.settings.DndSettingsScreen(
             onBack = { navigator.goBack() },
-            onFocusModeClick = { navigator.navigate(Screen.FocusMode) }
+            onProfilesClick = { navigator.navigate(Screen.Profiles) }
         )
     }
     entry<Screen.IslandActivity> {
         IslandHistoryScreen(onBack = { navigator.goBack() })
     }
-    entry<Screen.FocusMode> {
-        FocusModeScreen(onBack = { navigator.goBack() })
+    entry<Screen.Profiles> {
+        ProfilesScreen(
+            onBack = { navigator.goBack() },
+            onEditProfile = { id -> navigator.navigate(Screen.ProfileEditor(id)) }
+        )
+    }
+    entry<Screen.ProfileEditor> { key ->
+        ProfileEditorScreen(profileId = key.profileId, onBack = { navigator.goBack() })
     }
     entry<Screen.PermanentIslandConfig> {
         com.nerufuyo.hyperisland.ui.screens.settings.PermanentIslandConfigScreen(onBack = { navigator.goBack() })

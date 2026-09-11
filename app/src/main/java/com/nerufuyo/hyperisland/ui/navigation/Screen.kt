@@ -26,5 +26,6 @@ sealed interface Screen : NavKey {
     @Serializable data object PermanentIslandConfig : Screen
     @Serializable data object ReplyCustomization : Screen
     @Serializable data object IslandActivity : Screen
-    @Serializable data object FocusMode : Screen
+    @Serializable data object Profiles : Screen
+    @Serializable data class ProfileEditor(val profileId: String?) : Screen
 }

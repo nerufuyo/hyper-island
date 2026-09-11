@@ -63,15 +63,39 @@ class NotificationReaderService : NotificationListenerService() {
         const val ACTION_PERFORM_MIGRATION = "com.nerufuyo.hyperisland.ACTION_PERFORM_MIGRATION"
 
         /**
-         * Pure time-window check for scheduled DND, pulled out of isWithinDndSchedule()
-         * so it's testable without an Android Context. start > end means the window
-         * spans midnight (e.g. 22:00 -> 07:00).
+         * Pure time-window check used by SCHEDULE-type Mute Profiles, pulled out so it's
+         * testable without an Android Context. start > end means the window spans midnight
+         * (e.g. 22:00 -> 07:00).
          */
         internal fun isTimeWithinWindow(nowMinutes: Int, startMinutes: Int, endMinutes: Int): Boolean {
             return if (startMinutes <= endMinutes) {
                 nowMinutes in startMinutes until endMinutes
             } else {
                 nowMinutes >= startMinutes || nowMinutes < endMinutes
+            }
+        }
+
+        /**
+         * Pure "should islands be muted right now" check across all Mute Profiles, pulled out
+         * so it's testable without Context/Room. foregroundPackage may be null (Usage Access
+         * not granted, or nothing needed it) - APP_FOREGROUND profiles just never match then.
+         */
+        internal fun isAnyProfileActive(
+            profiles: List<com.nerufuyo.hyperisland.data.db.MuteProfile>,
+            nowMinutes: Int,
+            foregroundPackage: String?
+        ): Boolean {
+            return profiles.filter { it.enabled }.any { profile ->
+                when (profile.triggerType) {
+                    com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_MANUAL -> true
+                    com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_SCHEDULE ->
+                        isTimeWithinWindow(nowMinutes, profile.scheduleStartMinutes, profile.scheduleEndMinutes)
+                    com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_APP_FOREGROUND -> {
+                        val apps = profile.triggerApps.split(",").filter { it.isNotEmpty() }
+                        foregroundPackage != null && foregroundPackage in apps
+                    }
+                    else -> false
+                }
             }
         }
     }
@@ -113,11 +137,7 @@ class NotificationReaderService : NotificationListenerService() {
     
     private var isDndModeEnabled = false
     private var autoDetectDnd = false
-    private var dndScheduleEnabled = false
-    private var dndScheduleStartMinutes = AppPreferences.DEFAULT_DND_SCHEDULE_START_MINUTES
-    private var dndScheduleEndMinutes = AppPreferences.DEFAULT_DND_SCHEDULE_END_MINUTES
-    private var focusModeEnabled = false
-    private var focusModeApps: Set<String> = emptySet()
+    private var muteProfiles: List<com.nerufuyo.hyperisland.data.db.MuteProfile> = emptyList()
 
     // --- CACHES ---
     private val recentlyRemovedKeys = ConcurrentHashMap<String, Long>()
@@ -255,11 +275,10 @@ class NotificationReaderService : NotificationListenerService() {
         serviceScope.launch { preferences.globalBlockedTermsFlow.collectLatest { globalBlockedTerms = it } }
         serviceScope.launch { preferences.isDndModeEnabledFlow.collectLatest { isDndModeEnabled = it } }
         serviceScope.launch { preferences.autoDetectDndFlow.collectLatest { autoDetectDnd = it } }
-        serviceScope.launch { preferences.dndScheduleEnabledFlow.collectLatest { dndScheduleEnabled = it } }
-        serviceScope.launch { preferences.dndScheduleStartMinutesFlow.collectLatest { dndScheduleStartMinutes = it } }
-        serviceScope.launch { preferences.dndScheduleEndMinutesFlow.collectLatest { dndScheduleEndMinutes = it } }
-        serviceScope.launch { preferences.focusModeEnabledFlow.collectLatest { focusModeEnabled = it } }
-        serviceScope.launch { preferences.focusModeAppsFlow.collectLatest { focusModeApps = it } }
+        serviceScope.launch {
+            com.nerufuyo.hyperisland.data.db.AppDatabase.getDatabase(applicationContext).muteProfileDao()
+                .getAllFlow().collectLatest { muteProfiles = it }
+        }
 
         // Listen for Theme Changes
         serviceScope.launch {
@@ -682,33 +701,27 @@ class NotificationReaderService : NotificationListenerService() {
     }
 
     /**
-     * True when "now" falls inside the configured scheduled-DND window.
-     * start > end means the window spans midnight (e.g. 22:00 -> 07:00).
+     * True when at least one enabled Mute Profile's trigger currently matches - the
+     * iOS-Focus-style generalization of what used to be separate schedule/focus-mode checks.
+     * Foreground-app lookup only happens if some enabled profile actually needs it (same lazy,
+     * checked-per-notification approach the old isFocusModeActive() used).
      */
-    private fun isWithinDndSchedule(): Boolean {
-        if (!dndScheduleEnabled) return false
-        val cal = Calendar.getInstance()
-        val nowMinutes = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE)
-        return isTimeWithinWindow(nowMinutes, dndScheduleStartMinutes, dndScheduleEndMinutes)
-    }
+    private fun isAnyMuteProfileActive(): Boolean {
+        val enabled = muteProfiles.filter { it.enabled }
+        if (enabled.isEmpty()) return false
 
-    /**
-     * True when Focus Mode is on and the app currently in the foreground is one the user
-     * picked (e.g. a game). Checked at the moment a notification arrives rather than via a
-     * background poll - one system query per notification is far cheaper than continuously
-     * tracking foreground state, and this is the only time it actually matters.
-     */
-    private fun isFocusModeActive(): Boolean {
-        if (!focusModeEnabled || focusModeApps.isEmpty()) return false
-        val foregroundPackage = getForegroundPackageName(this) ?: return false
-        return foregroundPackage in focusModeApps
+        val nowMinutes = Calendar.getInstance().let { it.get(Calendar.HOUR_OF_DAY) * 60 + it.get(Calendar.MINUTE) }
+        val needsForeground = enabled.any { it.triggerType == com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_APP_FOREGROUND }
+        val foregroundPackage = if (needsForeground) getForegroundPackageName(this) else null
+
+        return isAnyProfileActive(enabled, nowMinutes, foregroundPackage)
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private suspend fun processStandardNotification(rawSbn: StatusBarNotification) {
         val manager = getSystemService(NotificationManager::class.java)
         val isSystemDndActive = manager.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL
-        val dndActive = isDndModeEnabled || (autoDetectDnd && isSystemDndActive) || isWithinDndSchedule() || isFocusModeActive()
+        val dndActive = isDndModeEnabled || (autoDetectDnd && isSystemDndActive) || isAnyMuteProfileActive()
 
         if (dndActive) {
             Log.d(TAG, "DND active. Skipping notification ${rawSbn.packageName}")

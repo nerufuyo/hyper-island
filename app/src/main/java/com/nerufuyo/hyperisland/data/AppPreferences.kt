@@ -28,11 +28,6 @@ private val Context.legacyDataStore: DataStore<Preferences> by preferencesDataSt
 
 class AppPreferences(context: Context) {
 
-    companion object {
-        const val DEFAULT_DND_SCHEDULE_START_MINUTES = 22 * 60 // 22:00
-        const val DEFAULT_DND_SCHEDULE_END_MINUTES = 7 * 60    // 07:00
-    }
-
     private val dao = AppDatabase.getDatabase(context).settingsDao()
     private val legacyDataStore = context.applicationContext.legacyDataStore
 
@@ -491,32 +486,10 @@ class AppPreferences(context: Context) {
     val autoDetectDndFlow: Flow<Boolean> = dao.getSettingFlow("auto_detect_dnd").map { it.toBoolean(false) }
     suspend fun setAutoDetectDnd(autoDetect: Boolean) = save("auto_detect_dnd", autoDetect.toString())
 
-    // Scheduled DND: mute islands automatically during a daily time window.
-    // Times are stored as minutes-since-midnight (0-1439). start > end means the
-    // window spans midnight (e.g. 22:00 -> 07:00), handled in isWithinDndSchedule().
-    val dndScheduleEnabledFlow: Flow<Boolean> = dao.getSettingFlow("dnd_schedule_enabled").map { it.toBoolean(false) }
-    suspend fun setDndScheduleEnabled(isEnabled: Boolean) = save("dnd_schedule_enabled", isEnabled.toString())
-
-    val dndScheduleStartMinutesFlow: Flow<Int> =
-        dao.getSettingFlow("dnd_schedule_start_minutes").map { it.toInt(DEFAULT_DND_SCHEDULE_START_MINUTES) }
-    suspend fun setDndScheduleStartMinutes(minutes: Int) = save("dnd_schedule_start_minutes", minutes.toString())
-
-    val dndScheduleEndMinutesFlow: Flow<Int> =
-        dao.getSettingFlow("dnd_schedule_end_minutes").map { it.toInt(DEFAULT_DND_SCHEDULE_END_MINUTES) }
-    suspend fun setDndScheduleEndMinutes(minutes: Int) = save("dnd_schedule_end_minutes", minutes.toString())
-
-    // Focus Mode: mute islands while a chosen app (e.g. a game) is in the foreground.
-    // Needs Usage Access (SystemIntents.isUsageAccessGranted/openUsageAccessSettings) -
-    // if it's not granted, getForegroundPackageName() just returns null and this never fires.
-    val focusModeEnabledFlow: Flow<Boolean> = dao.getSettingFlow("focus_mode_enabled").map { it.toBoolean(false) }
-    suspend fun setFocusModeEnabled(isEnabled: Boolean) = save("focus_mode_enabled", isEnabled.toString())
-
-    val focusModeAppsFlow: Flow<Set<String>> = dao.getSettingFlow("focus_mode_apps").map { it.deserializeSet() }
-    suspend fun toggleFocusModeApp(packageName: String, isEnabled: Boolean) {
-        val current = focusModeAppsFlow.first()
-        val updated = if (isEnabled) current + packageName else current - packageName
-        save("focus_mode_apps", updated.serialize())
-    }
+    // Scheduled quiet hours and Focus Mode (per-app auto-mute) used to live here as two
+    // separate single-instance settings. Superseded by MuteProfile (data/db/MuteProfile.kt) -
+    // an arbitrary number of named, independently-triggered profiles, iOS-Focus-style.
+    // NotificationReaderService reads them via MuteProfileDao.getAllFlow() directly.
 
     // --- APP-SPECIFIC ENGINE OVERRIDES ---
 

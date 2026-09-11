@@ -1,7 +1,5 @@
 package com.nerufuyo.hyperisland.ui.screens.settings
 
-import android.app.TimePickerDialog
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -11,10 +9,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Bedtime
 import androidx.compose.material.icons.outlined.DoNotDisturbOn
 import androidx.compose.material.icons.outlined.NotificationsPaused
-import androidx.compose.material.icons.outlined.SportsEsports
+import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
@@ -37,36 +34,13 @@ import com.nerufuyo.hyperisland.data.AppPreferences
 import com.nerufuyo.hyperisland.ui.components.ListOptionCard
 import kotlinx.coroutines.launch
 
-private fun formatMinutes(totalMinutes: Int): String {
-    val h = totalMinutes / 60
-    val m = totalMinutes % 60
-    return String.format("%02d:%02d", h, m)
-}
-
-private fun showTimePicker(context: android.content.Context, initialMinutes: Int, onPicked: (Int) -> Unit) {
-    TimePickerDialog(
-        context,
-        { _, hour, minute -> onPicked(hour * 60 + minute) },
-        initialMinutes / 60,
-        initialMinutes % 60,
-        true
-    ).show()
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DndSettingsScreen(onBack: () -> Unit, onFocusModeClick: () -> Unit) {
+fun DndSettingsScreen(onBack: () -> Unit, onProfilesClick: () -> Unit) {
     val context = LocalContext.current
     val prefs = remember { AppPreferences(context) }
     val isDndModeEnabled by prefs.isDndModeEnabledFlow.collectAsState(initial = false)
     val autoDetectDnd by prefs.autoDetectDndFlow.collectAsState(initial = false)
-    val dndScheduleEnabled by prefs.dndScheduleEnabledFlow.collectAsState(initial = false)
-    val dndScheduleStart by prefs.dndScheduleStartMinutesFlow.collectAsState(
-        initial = AppPreferences.DEFAULT_DND_SCHEDULE_START_MINUTES
-    )
-    val dndScheduleEnd by prefs.dndScheduleEndMinutesFlow.collectAsState(
-        initial = AppPreferences.DEFAULT_DND_SCHEDULE_END_MINUTES
-    )
     val scope = rememberCoroutineScope()
 
     Scaffold(
@@ -115,7 +89,7 @@ fun DndSettingsScreen(onBack: () -> Unit, onFocusModeClick: () -> Unit) {
                 title = stringResource(R.string.dnd_manual_toggle),
                 subtitle = stringResource(R.string.dnd_manual_toggle_desc),
                 icon = Icons.Outlined.NotificationsPaused,
-                shape = RoundedCornerShape(4.dp, 4.dp, if (dndScheduleEnabled) 4.dp else 24.dp, if (dndScheduleEnabled) 4.dp else 24.dp),
+                shape = RoundedCornerShape(4.dp),
                 onClick = {
                     scope.launch { prefs.setDndModeEnabled(!isDndModeEnabled) }
                 },
@@ -129,57 +103,11 @@ fun DndSettingsScreen(onBack: () -> Unit, onFocusModeClick: () -> Unit) {
             Spacer(Modifier.height(2.dp))
 
             ListOptionCard(
-                title = stringResource(R.string.dnd_schedule),
-                subtitle = stringResource(R.string.dnd_schedule_desc),
-                icon = Icons.Outlined.Bedtime,
-                shape = RoundedCornerShape(4.dp),
-                onClick = {
-                    scope.launch { prefs.setDndScheduleEnabled(!dndScheduleEnabled) }
-                },
-                trailingContent = {
-                    Switch(checked = dndScheduleEnabled, onCheckedChange = {
-                        scope.launch { prefs.setDndScheduleEnabled(it) }
-                    })
-                }
-            )
-
-            AnimatedVisibility(visible = dndScheduleEnabled) {
-                Column {
-                    Spacer(Modifier.height(2.dp))
-                    ListOptionCard(
-                        title = stringResource(R.string.dnd_schedule_start),
-                        subtitle = formatMinutes(dndScheduleStart),
-                        icon = Icons.Outlined.Bedtime,
-                        shape = RoundedCornerShape(4.dp),
-                        onClick = {
-                            showTimePicker(context, dndScheduleStart) { minutes ->
-                                scope.launch { prefs.setDndScheduleStartMinutes(minutes) }
-                            }
-                        }
-                    )
-                    Spacer(Modifier.height(2.dp))
-                    ListOptionCard(
-                        title = stringResource(R.string.dnd_schedule_end),
-                        subtitle = formatMinutes(dndScheduleEnd),
-                        icon = Icons.Outlined.Bedtime,
-                        shape = RoundedCornerShape(4.dp),
-                        onClick = {
-                            showTimePicker(context, dndScheduleEnd) { minutes ->
-                                scope.launch { prefs.setDndScheduleEndMinutes(minutes) }
-                            }
-                        }
-                    )
-                }
-            }
-
-            Spacer(Modifier.height(2.dp))
-
-            ListOptionCard(
-                title = stringResource(R.string.focus_mode_title),
-                subtitle = stringResource(R.string.focus_mode_desc),
-                icon = Icons.Outlined.SportsEsports,
+                title = stringResource(R.string.mute_profiles_title),
+                subtitle = stringResource(R.string.mute_profiles_desc),
+                icon = Icons.Outlined.Tune,
                 shape = RoundedCornerShape(4.dp, 4.dp, 24.dp, 24.dp),
-                onClick = onFocusModeClick
+                onClick = onProfilesClick
             )
         }
     }

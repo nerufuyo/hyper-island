@@ -28,9 +28,10 @@ import java.util.zip.ZipInputStream
 class ThemeRepository(private val context: Context) {
 
     companion object {
-        // ponytail: Minimal/Monochrome batch only for now - add more BUILT_IN_PRESETS
-        // entries (Vibrant, Pastel, ...) once there's a direction for them.
+        // ponytail: three style directions (Minimal, Vibrant, Pastel). Add more entries
+        // here for a new style batch - no other code needs to change.
         internal val BUILT_IN_PRESETS = listOf(
+            // --- Minimal / Monochrome ---
             HyperTheme(
                 id = "builtin_minimal_onyx",
                 meta = ThemeMetadata(
@@ -75,6 +76,98 @@ class ThemeRepository(private val context: Context) {
                     colorMode = ColorMode.CUSTOM,
                     iconShapeId = "circle"
                 )
+            ),
+            // --- Vibrant / Neon ---
+            HyperTheme(
+                id = "builtin_vibrant_neonpink",
+                meta = ThemeMetadata(
+                    name = "Neon Pink",
+                    author = "Hyper Island",
+                    description = "High-contrast pink glow on black."
+                ),
+                global = GlobalConfig(
+                    highlightColor = "#FF2D95",
+                    backgroundColor = "#0D0D0D",
+                    textColor = "#FFFFFF",
+                    colorMode = ColorMode.CUSTOM,
+                    iconShapeId = "circle"
+                )
+            ),
+            HyperTheme(
+                id = "builtin_vibrant_electricblue",
+                meta = ThemeMetadata(
+                    name = "Electric Blue",
+                    author = "Hyper Island",
+                    description = "Bright cyan accent on near-black."
+                ),
+                global = GlobalConfig(
+                    highlightColor = "#00E5FF",
+                    backgroundColor = "#0A0A1A",
+                    textColor = "#FFFFFF",
+                    colorMode = ColorMode.CUSTOM,
+                    iconShapeId = "squircle"
+                )
+            ),
+            HyperTheme(
+                id = "builtin_vibrant_acidgreen",
+                meta = ThemeMetadata(
+                    name = "Acid Green",
+                    author = "Hyper Island",
+                    description = "Loud lime green, for maximum visibility."
+                ),
+                global = GlobalConfig(
+                    highlightColor = "#B6FF00",
+                    backgroundColor = "#0D0D0D",
+                    textColor = "#FFFFFF",
+                    colorMode = ColorMode.CUSTOM,
+                    iconShapeId = "cookie"
+                )
+            ),
+            // --- Pastel / Soft ---
+            HyperTheme(
+                id = "builtin_pastel_blush",
+                meta = ThemeMetadata(
+                    name = "Blush",
+                    author = "Hyper Island",
+                    description = "Soft pink on a warm white background."
+                ),
+                global = GlobalConfig(
+                    highlightColor = "#FFD1DC",
+                    backgroundColor = "#FFF8F9",
+                    textColor = "#4A3B3E",
+                    colorMode = ColorMode.CUSTOM,
+                    iconShapeId = "circle"
+                )
+            ),
+            HyperTheme(
+                id = "builtin_pastel_mint",
+                meta = ThemeMetadata(
+                    name = "Mint",
+                    author = "Hyper Island",
+                    description = "Cool pastel green on off-white."
+                ),
+                global = GlobalConfig(
+                    highlightColor = "#C8F4E3",
+                    backgroundColor = "#F5FFFB",
+                    textColor = "#33413D",
+                    colorMode = ColorMode.CUSTOM,
+                    iconShapeId = "squircle"
+                )
+            ),
+            HyperTheme(
+                id = "builtin_pastel_lavender",
+                meta = ThemeMetadata(
+                    name = "Lavender",
+                    author = "Hyper Island",
+                    description = "Muted purple, soft and calm."
+                ),
+                global = GlobalConfig(
+                    highlightColor = "#E3D9FF",
+                    backgroundColor = "#FAF8FF",
+                    textColor = "#3A3352",
+                    colorMode = ColorMode.CUSTOM,
+                    iconShapeId = "circle"
+                )
             )
         )
     }
@@ -93,7 +186,7 @@ class ThemeRepository(private val context: Context) {
     }
 
     /**
-     * Installs the bundled Minimal/Monochrome presets on first run, using the same
+     * Installs the bundled theme presets (BUILT_IN_PRESETS) on first run, using the same
      * on-disk format as an imported .hbr theme so they show up in getAvailableThemes()
      * with no other changes needed. Guarded by a marker file so a user who deletes a
      * preset doesn't get it silently reinstalled.

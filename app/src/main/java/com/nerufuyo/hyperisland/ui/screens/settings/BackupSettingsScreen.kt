@@ -54,7 +54,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -73,10 +72,15 @@ fun BackupSettingsScreen(
     backupManager: BackupManager,
     onBackupFileLoaded: (HyperIslandBackup) -> Unit
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
+    // Resolved here (composition), not inside the launcher callbacks below - those aren't
+    // @Composable, so they can't call stringResource() directly.
+    val exportSuccessMessage = stringResource(R.string.export_success)
+    val exportFailedTemplate = stringResource(R.string.export_failed)
+    val importFailedTemplate = stringResource(R.string.import_failed)
 
     // Export Selection State
     var exportSelection by remember { mutableStateOf(BackupSelection()) }
@@ -94,9 +98,11 @@ fun BackupSettingsScreen(
                 val result = backupManager.performExport(uri, exportSelection)
                 isProcessing = false
                 if (result.isSuccess) {
-                    snackbarHostState.showSnackbar(context.getString(R.string.export_success))
+                    snackbarHostState.showSnackbar(exportSuccessMessage)
                 } else {
-                    snackbarHostState.showSnackbar(context.getString(R.string.export_failed, result.exceptionOrNull()?.message))
+                    snackbarHostState.showSnackbar(
+                        String.format(java.util.Locale.getDefault(), exportFailedTemplate, result.exceptionOrNull()?.message)
+                    )
                 }
             }
         }
@@ -117,7 +123,9 @@ fun BackupSettingsScreen(
                         onBackupFileLoaded(backup)
                     },
                     onFailure = { error ->
-                        snackbarHostState.showSnackbar(context.getString(R.string.import_failed, error.message))
+                        snackbarHostState.showSnackbar(
+                            String.format(java.util.Locale.getDefault(), importFailedTemplate, error.message)
+                        )
                     }
                 )
             }

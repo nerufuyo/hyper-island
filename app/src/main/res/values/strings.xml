@@ -68,7 +68,7 @@
     <string name="source_code_subtitle">GitHub Repository</string>
     <string name="licenses">Open Source Licenses</string>
     <string name="licenses_subtitle">Third-party software</string>
-    <string name="footer_made_with_love">Made with ❤️ in Spain</string>
+    <string name="footer_made_with_love">Open source and community maintained</string>
 
     <string name="app_health_desc">Ensure all checks are green for the app to work correctly in the background.</string>
     <string name="req_permissions">Required Permissions</string>

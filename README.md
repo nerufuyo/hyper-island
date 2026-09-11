@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="app/src/main/ic_launcher-playstore.png" width="150" alt="HyperIsland Logo" style="border-radius: 20%;" />
+  <img src="app/src/main/ic_launcher-playstore.png" width="150" alt="Hyper Island Logo" style="border-radius: 20%;" />
 </p>
 
 <h1 align="center">Hyper Island</h1>
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  Hyper Island bridges standard Android notifications into the pill-shaped UI around the camera cutout, offering a seamless, iOS-like experience on Xiaomi phones. Now with full theme customization and widget support.
+  Hyper Island bridges standard Android notifications into the pill-shaped UI around the camera cutout, for a seamless, iOS-like experience on Xiaomi phones — with full theme customization and widget support.
 </p>
 
 <p align="center">
@@ -23,41 +23,41 @@
 </p>
 
 <p align="center">
-  <sub>A fork of <a href="https://github.com/D4vidDf/HyperBridge">HyperBridge</a> by <a href="https://github.com/D4vidDf">D4vidDf</a>, licensed Apache 2.0. See <a href="#-license--attribution">License & Attribution</a>.</sub>
+  <sub>A fork of <a href="https://github.com/D4vidDf/HyperBridge">HyperBridge</a> by <a href="https://github.com/D4vidDf">D4vidDf</a>, licensed Apache 2.0. See the License &amp; Attribution section below.</sub>
 </p>
 
 <br>
 
-## 🚀 Features
+## <img src="https://api.iconify.design/lucide:rocket.svg?color=%23808080" width="20" height="20" align="absmiddle" /> Features
 
-* **Native Visuals:** Transforms notifications into HyperOS system-style islands.
-* **🎨 Theme Engine:** Customize every pixel.
-    * **Theme Creator:** Built-in editor to design your own themes with real-time previews.
-    * **Smart Colors:** Automatically extract vibrant brand colors from app icons.
-    * **Icon Shaping:** Choose between shapes like *Squircle*, *Clover*, *Arch*, and *Cookie*.
-    * **Granular Control:** Per-app overrides for colors, icons, and action styles.
-    * **Smart Icon Tinting:** Intelligently tints dark/monochrome icons to remain visible.
-* **🧩 Widgets:** Pin standard Android widgets to the island layer for quick access—even on the Lockscreen!
-* **🧠 Intelligent Permanent Island:** The permanent island now automatically hides itself whenever an active widget is shown on the screen, preventing awkward overlaps.
-* **Smart Integration:**
-    * **🎵 Media:** Show album art and "Now Playing" status with visualizer support.
-    * **🧭 Navigation:** Real-time turn-by-turn instructions (Google Maps, Waze).
-    * **⬇️ Downloads:** Dedicated circular progress layout with a satisfying "Green Tick" animation upon completion.
-    * **📞 Calls:** Dedicated layout for incoming and active calls with timers.
-* **🛡️ Spoiler Protection:** Define blocked terms globally or per-app to prevent specific notifications (e.g., message spoilers) from popping up on the Island.
-* **Sui & Shizuku Support:** Fully supports Sui and Shizuku for enhanced network operations and seamless integration on rooted devices.
-* **Total Control:** Choose exactly which apps trigger the island, customize timeouts, and toggle floating behavior per app.
+* **Native visuals** — Turns standard notifications into HyperOS-style islands.
+* **Theme engine** — Full control over how islands look.
+    * **Theme creator** — Built-in editor with real-time previews.
+    * **Smart colors** — Pulls accent colors from app icons automatically.
+    * **Icon shaping** — Squircle, Clover, Arch, or Cookie.
+    * **Granular control** — Per-app overrides for colors, icons, and action styles.
+    * **Smart icon tinting** — Keeps dark or monochrome icons visible.
+* **Widgets** — Pin standard Android widgets to the island layer, including the lockscreen.
+* **Intelligent permanent island** — Hides itself automatically when a widget is active, so the two never overlap.
+* **Smart integration**
+    * **Media** — Album art and "Now Playing" status, with visualizer support.
+    * **Navigation** — Real-time turn-by-turn for Google Maps and Waze.
+    * **Downloads** — Circular progress layout with a completion animation.
+    * **Calls** — Dedicated layout for incoming and active calls, with timers.
+* **Spoiler protection** — Block specific terms globally or per app so they never show on the island.
+* **Sui & Shizuku support** — Enhanced integration on rooted devices.
+* **Total control** — Choose which apps trigger the island, set timeouts, and toggle floating behavior per app.
 
-## 👩‍💻 For Developers: Create Themes
+## <img src="https://api.iconify.design/lucide:code-2.svg?color=%23808080" width="20" height="20" align="absmiddle" /> For Developers: Create Themes
 
-HyperIsland supports an open theming standard (`.hbr` packages). You can create themes and distribute them, or integrate a "Apply Theme" button directly into your own app (Launcher, Icon Pack, etc.).
+Hyper Island supports an open theming standard (`.hbr` packages). Build themes and distribute them, or wire an "Apply Theme" button directly into your own app (launcher, icon pack, etc.).
 
-* **Documentation:** [Full Guide on Creating & Distributing Themes](https://github.com/nerufuyo/hyper-island/discussions/78)
+* **Documentation:** [Full guide on creating & distributing themes](https://github.com/nerufuyo/hyper-island/discussions/78)
 * **Intent API:** Send themes programmatically using `com.nerufuyo.hyperisland.APPLY_THEME`.
 
-## 🌐 Supported Languages
+## <img src="https://api.iconify.design/lucide:languages.svg?color=%23808080" width="20" height="20" align="absmiddle" /> Supported Languages
 
-Translations below were carried over from the upstream HyperBridge project (see attribution). Want to help translate HyperIsland going forward? Open an issue or PR with new/updated `strings.xml` files.
+Translations below were carried over from the upstream HyperBridge project (see attribution). Want to help translate Hyper Island going forward? Open an issue or PR with new/updated `strings.xml` files.
 
 * 🇺🇸 **English** (Default)
 * 🇪🇸 **Spanish** (Español)
@@ -71,7 +71,7 @@ Translations below were carried over from the upstream HyperBridge project (see 
 * 🇮🇩 **Indonesian** (Bahasa Indonesia)
 * 🇹🇷 **Turkish** (Türkçe)
 
-## 🛠️ Tech Stack
+## <img src="https://api.iconify.design/lucide:wrench.svg?color=%23808080" width="20" height="20" align="absmiddle" /> Tech Stack
 
 * **Language:** Kotlin
 * **UI:** Jetpack Compose (Material 3 Expressive)
@@ -80,54 +80,57 @@ Translations below were carried over from the upstream HyperBridge project (see 
 * **Services:** NotificationListenerService, WidgetOverlayService
 * **Concurrency:** Kotlin Coroutines & Flow
 
-## 📸 Screenshots
+## <img src="https://api.iconify.design/lucide:image.svg?color=%23808080" width="20" height="20" align="absmiddle" /> Screenshots
 
 | Home Screen | Active Island | Theme Creator | Widget Picker |
 |:---:|:---:|:---:|:---:|
 | ![Home](./screenshots/home.png) | ![Island](./screenshots/island_example.png) | ![Creator](./screenshots/theme_creator.png) | ![Widgets](./screenshots/widget_picker.png) |
 
-## 🤝 Acknowledgements
+> Screenshots still show the upstream HyperBridge branding — pending a refresh once the app icon and in-app assets are updated.
 
-Special thanks to the following people and projects for their invaluable contributions:
+## <img src="https://api.iconify.design/lucide:handshake.svg?color=%23808080" width="20" height="20" align="absmiddle" /> Acknowledgements
 
-*   **[Stardawn](https://www.coolapk1s.com/feed/70418983)**: For the extensive research on the XMSF notification workaround that enables HyperIslands on Chinese ROMs.
+Thanks to the following people and projects for their contributions:
 
-## 📥 Installation
+* **[Stardawn](https://www.coolapk1s.com/feed/70418983)** — for the research on the XMSF notification workaround that enables HyperIslands on Chinese ROMs.
+
+## <img src="https://api.iconify.design/lucide:download.svg?color=%23808080" width="20" height="20" align="absmiddle" /> Installation
 
 Not yet published to the Play Store.
 
 1.  Download the latest APK from the [Releases](https://github.com/nerufuyo/hyper-island/releases) page (once available), or build from source in Android Studio.
 2.  Install the APK on your Xiaomi/POCO/Redmi device.
 
-### ⚙️ Setup (Required for both methods)
-1.  Grant **"Notification Access"** when prompted.
-2.  **Critical:** Follow the in-app guide to enable **Autostart** and **No Restrictions** (Battery) to prevent the system from killing the background service.
+### Setup
 
-## 🤝 Contributing
+1.  Grant **Notification Access** when prompted.
+2.  **Critical:** Follow the in-app guide to enable **Autostart** and **No Restrictions** (Battery) — otherwise the system will kill the background service.
 
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a Pull Request.
+## <img src="https://api.iconify.design/lucide:git-pull-request.svg?color=%23808080" width="20" height="20" align="absmiddle" /> Contributing
+
+Contributions are welcome. Read the [Contributing Guidelines](CONTRIBUTING.md) before opening a Pull Request.
 
 1.  **Fork** the repository.
-2.  Create a new branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
+2.  Create a branch (`git checkout -b feature/amazing-feature`).
+3.  Commit your changes (`git commit -m 'Add amazing feature'`).
+4.  Push the branch (`git push origin feature/amazing-feature`).
 5.  Open a **Pull Request**.
 
-## 💖 Support the Project
+## <img src="https://api.iconify.design/lucide:heart.svg?color=%23808080" width="20" height="20" align="absmiddle" /> Support the Project
 
-Hyper Island is an open-source project developed in my free time. If this app has improved your daily experience, please consider supporting its development!
+Hyper Island is open source, built in spare time. If it's improved your daily experience, consider supporting its development.
 
 <a href="https://github.com/sponsors/nerufuyo">
   <img src="https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86" width="150" alt="Sponsor"/>
 </a>
 
-## 📜 License & Attribution
+## <img src="https://api.iconify.design/lucide:scale.svg?color=%23808080" width="20" height="20" align="absmiddle" /> License & Attribution
 
-Distributed under the Apache 2.0 License. See `LICENSE` for more information.
+Distributed under the Apache 2.0 License. See `LICENSE` for details.
 
 **Hyper Island is a fork of [HyperBridge](https://github.com/D4vidDf/HyperBridge) by [D4vidDf](https://github.com/D4vidDf)**, also Apache 2.0 licensed. Full credit to the original author for the core notification-bridging engine, theme system, and translator architecture this project builds on. See [NOTICE](NOTICE) for details.
 
-## 👤 Developer
+## <img src="https://api.iconify.design/lucide:user.svg?color=%23808080" width="20" height="20" align="absmiddle" /> Developer
 
 **nerufuyo**
 * Website: [github.com/nerufuyo](https://github.com/nerufuyo)

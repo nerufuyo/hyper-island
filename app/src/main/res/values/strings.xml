@@ -661,6 +661,13 @@
     <string name="profile_editor_save">Save</string>
     <string name="profile_editor_delete">Delete profile</string>
     <string name="profile_editor_usage_access_needed">App-based triggers need Usage Access</string>
+    <string name="profile_widget_label">Mute Profile Toggle</string>
+    <string name="profile_widget_description">Tap to turn one Mute Profile on or off</string>
+    <string name="profile_widget_not_configured">Tap to set up</string>
+    <string name="profile_widget_status_on">ON</string>
+    <string name="profile_widget_status_off">OFF</string>
+    <string name="profile_widget_pick_title">Choose a profile</string>
+    <string name="profile_widget_create_first">Create a Mute Profile first, then add this widget</string>
     <string name="focus_mode_title">Focus Mode</string>
     <string name="focus_mode_desc">Automatically pause islands while a chosen app (like a game) is in the foreground</string>
     <string name="focus_mode_grant_usage_access">Grant Usage Access</string>

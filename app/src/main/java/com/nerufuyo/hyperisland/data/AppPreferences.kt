@@ -491,6 +491,12 @@ class AppPreferences(context: Context) {
     // an arbitrary number of named, independently-triggered profiles, iOS-Focus-style.
     // NotificationReaderService reads them via MuteProfileDao.getAllFlow() directly.
 
+    // Which MuteProfile a given home-screen widget instance (by AppWidgetManager id) was
+    // configured to toggle. One widget = one profile, like adding an iOS Focus button.
+    suspend fun getWidgetProfileId(widgetId: Int): String? = dao.getSetting("widget_profile_$widgetId")
+    suspend fun setWidgetProfileId(widgetId: Int, profileId: String) = save("widget_profile_$widgetId", profileId)
+    suspend fun clearWidgetProfileId(widgetId: Int) = remove("widget_profile_$widgetId")
+
     // --- APP-SPECIFIC ENGINE OVERRIDES ---
 
     fun getAppEnginePreferenceFlow(packageName: String): Flow<Boolean?> {

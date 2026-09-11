@@ -103,22 +103,28 @@ class NotificationReaderService : NotificationListenerService() {
     private val TAG = "HyperIslandDebug"
     private val EXTRA_ORIGINAL_KEY = "hyper_original_key"
 
-    // ponytail: temporary capture hook for ride-hailing integration (Gojek/Grab/Maxim).
-    // Dumps raw notification extras for these packages to Logcat so a real sample can be
-    // reverse-engineered into a proper translator. Remove once those translators exist.
-    private val rideHailingCapturePackages = setOf(
-        "com.gojek.app",        // Gojek
-        "com.grabtaxi.passenger", // Grab
-        "com.taxsee.taxsee"     // Maxim
+    // ponytail: temporary capture hook for pending translator integrations. Dumps raw
+    // notification extras for these packages to Logcat so a real sample can be
+    // reverse-engineered into a proper translator - undocumented custom notification layouts
+    // (not standard MediaStyle/CallStyle) can't be guessed, same reason NavTranslator has
+    // separate branches for Maps vs Waze. Remove each package's entry once its translator exists.
+    private val notificationCapturePackages = mapOf(
+        // Ride-hailing (also covers GoFood/GrabFood - same apps, different notification channel)
+        "com.gojek.app" to "ride-hailing/food-delivery (Gojek/GoFood)",
+        "com.grabtaxi.passenger" to "ride-hailing/food-delivery (Grab/GrabFood)",
+        "com.taxsee.taxsee" to "ride-hailing (Maxim)",
+        // GPS tracker / fitness (Workout-style live activity - distance/pace/time, not turn-by-turn)
+        "com.strava" to "fitness (Strava)",
+        "com.nike.plusgps" to "fitness (Nike Run Club)"
     )
 
-    private fun captureRideHailingNotification(sbn: StatusBarNotification) {
-        if (sbn.packageName !in rideHailingCapturePackages) return
+    private fun captureNotificationForResearch(sbn: StatusBarNotification) {
+        val label = notificationCapturePackages[sbn.packageName] ?: return
         val extras = sbn.notification.extras
         val dump = extras.keySet().sorted().joinToString("\n") { key -> "  $key = ${extras.get(key)}" }
         Log.i(
             "HyperIslandCapture",
-            "=== ${sbn.packageName} | category=${sbn.notification.category} | key=${sbn.key} ===\n$dump"
+            "=== ${sbn.packageName} ($label) | category=${sbn.notification.category} | key=${sbn.key} ===\n$dump"
         )
     }
 
@@ -664,7 +670,7 @@ class NotificationReaderService : NotificationListenerService() {
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         sbn?.let {
-            captureRideHailingNotification(it)
+            captureNotificationForResearch(it)
 
             if (it.packageName != packageName) {
                 val extras = it.notification.extras

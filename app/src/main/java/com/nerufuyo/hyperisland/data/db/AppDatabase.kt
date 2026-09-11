@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [AppSetting::class, IslandHistoryEntry::class, MuteProfile::class], version = 4, exportSchema = false)
+@Database(entities = [AppSetting::class, IslandHistoryEntry::class, MuteProfile::class], version = 5, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun settingsDao(): SettingsDao
     abstract fun islandHistoryDao(): IslandHistoryDao

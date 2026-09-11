@@ -2,6 +2,7 @@ package com.nerufuyo.hyperisland.service
 
 import android.Manifest
 import android.app.Notification
+import android.bluetooth.BluetoothDevice
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -79,11 +80,13 @@ class NotificationReaderService : NotificationListenerService() {
          * Which enabled Mute Profiles currently have their trigger matching, pulled out so
          * it's testable without Context/Room. foregroundPackage may be null (Usage Access not
          * granted, or nothing needed it) - APP_FOREGROUND profiles just never match then.
+         * Same for connectedBluetoothAddresses and BLUETOOTH_CONNECT.
          */
         internal fun activeProfiles(
             profiles: List<com.nerufuyo.hyperisland.data.db.MuteProfile>,
             nowMinutes: Int,
-            foregroundPackage: String?
+            foregroundPackage: String?,
+            connectedBluetoothAddresses: Set<String> = emptySet()
         ): List<com.nerufuyo.hyperisland.data.db.MuteProfile> {
             return profiles.filter { it.enabled }.filter { profile ->
                 when (profile.triggerType) {
@@ -94,6 +97,9 @@ class NotificationReaderService : NotificationListenerService() {
                         val apps = profile.triggerApps.split(",").filter { it.isNotEmpty() }
                         foregroundPackage != null && foregroundPackage in apps
                     }
+                    com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_BLUETOOTH ->
+                        profile.triggerBluetoothAddress.isNotEmpty() &&
+                            profile.triggerBluetoothAddress in connectedBluetoothAddresses
                     else -> false
                 }
             }
@@ -253,15 +259,33 @@ class NotificationReaderService : NotificationListenerService() {
         }
     }
 
+    // Live "what's connected right now" for TRIGGER_BLUETOOTH Mute Profiles. Bonded (paired)
+    // devices don't tell you this - only ACL_CONNECTED/DISCONNECTED does.
+    private val connectedBluetoothAddresses = ConcurrentHashMap.newKeySet<String>()
+
+    private val bluetoothReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java) ?: return
+            try {
+                when (intent.action) {
+                    BluetoothDevice.ACTION_ACL_CONNECTED -> connectedBluetoothAddresses.add(device.address)
+                    BluetoothDevice.ACTION_ACL_DISCONNECTED -> connectedBluetoothAddresses.remove(device.address)
+                }
+            } catch (e: SecurityException) {
+                Log.e(TAG, "Missing BLUETOOTH_CONNECT permission for device address lookup", e)
+            }
+        }
+    }
+
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun onCreate() {
         super.onCreate()
-        
+
         val filter = IntentFilter(Intent.ACTION_USER_UNLOCKED)
         filter.addAction(Intent.ACTION_SCREEN_ON)
         filter.addAction(Intent.ACTION_SCREEN_OFF)
         registerReceiver(systemReceiver, filter)
-        
+
         val clickFilter = IntentFilter("com.nerufuyo.hyperisland.ISLAND_CLICKED")
         androidx.core.content.ContextCompat.registerReceiver(
             this,
@@ -269,7 +293,11 @@ class NotificationReaderService : NotificationListenerService() {
             clickFilter,
             androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
         )
-        
+
+        val bluetoothFilter = IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED)
+        bluetoothFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
+        registerReceiver(bluetoothReceiver, bluetoothFilter)
+
         preferences = AppPreferences(applicationContext)
         createChannels()
 
@@ -743,7 +771,7 @@ class NotificationReaderService : NotificationListenerService() {
         val needsForeground = enabled.any { it.triggerType == com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_APP_FOREGROUND }
         val foregroundPackage = if (needsForeground) getForegroundPackageName(this) else null
 
-        val active = activeProfiles(enabled, nowMinutes, foregroundPackage)
+        val active = activeProfiles(enabled, nowMinutes, foregroundPackage, connectedBluetoothAddresses.toSet())
         return isMutedByProfiles(active, packageName)
     }
 
@@ -1505,6 +1533,7 @@ class NotificationReaderService : NotificationListenerService() {
         super.onDestroy()
         unregisterReceiver(systemReceiver)
         unregisterReceiver(islandClickReceiver)
+        unregisterReceiver(bluetoothReceiver)
         syncJob?.cancel()
         serviceScope.cancel() 
     }

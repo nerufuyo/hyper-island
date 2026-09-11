@@ -655,6 +655,10 @@
     <string name="profile_editor_trigger_manual">Manual</string>
     <string name="profile_editor_trigger_schedule">Schedule</string>
     <string name="profile_editor_trigger_app">App-based</string>
+    <string name="profile_editor_trigger_bluetooth">Bluetooth</string>
+    <string name="profile_editor_bluetooth_access_needed">Bluetooth triggers need the Nearby Devices permission</string>
+    <string name="profile_editor_pick_device">Device that triggers this profile</string>
+    <string name="profile_editor_no_devices">No paired Bluetooth devices found. Pair one in system Settings first.</string>
     <string name="profile_editor_start_time">Start time</string>
     <string name="profile_editor_end_time">End time</string>
     <string name="profile_editor_pick_apps">Apps that trigger this profile</string>

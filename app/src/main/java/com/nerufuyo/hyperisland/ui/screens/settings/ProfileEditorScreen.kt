@@ -1,7 +1,8 @@
 package com.nerufuyo.hyperisland.ui.screens.settings
 
 import android.app.TimePickerDialog
-import androidx.compose.foundation.layout.Column
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Bedtime
+import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.NotificationsPaused
 import androidx.compose.material.icons.outlined.Shield
@@ -24,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -50,6 +53,8 @@ import com.nerufuyo.hyperisland.data.db.MuteProfile
 import com.nerufuyo.hyperisland.ui.AppListViewModel
 import com.nerufuyo.hyperisland.ui.components.AppListItem
 import com.nerufuyo.hyperisland.ui.components.ListOptionCard
+import com.nerufuyo.hyperisland.util.getBondedBluetoothDevices
+import com.nerufuyo.hyperisland.util.isBluetoothConnectGranted
 import com.nerufuyo.hyperisland.util.isUsageAccessGranted
 import com.nerufuyo.hyperisland.util.openUsageAccessSettings
 import kotlinx.coroutines.launch
@@ -91,7 +96,14 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
     var selectedPriorityApps by remember { mutableStateOf(emptySet<String>()) }
     var showPriorityPicker by remember { mutableStateOf(false) }
     var hasUsageAccess by remember { mutableStateOf(isUsageAccessGranted(context)) }
+    var hasBluetoothAccess by remember { mutableStateOf(isBluetoothConnectGranted(context)) }
+    var selectedBluetoothAddress by remember { mutableStateOf("") }
     val apps by appListViewModel.libraryAppsState.collectAsState()
+
+    val bluetoothPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted -> hasBluetoothAccess = granted }
+    )
 
     LaunchedEffect(profileId) {
         if (profileId != null) {
@@ -103,6 +115,7 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                 scheduleEnd = p.scheduleEndMinutes
                 selectedApps = p.triggerApps.split(",").filter { it.isNotEmpty() }.toSet()
                 selectedPriorityApps = p.priorityApps.split(",").filter { it.isNotEmpty() }.toSet()
+                selectedBluetoothAddress = p.triggerBluetoothAddress
             }
         }
     }
@@ -119,7 +132,8 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                     scheduleStartMinutes = scheduleStart,
                     scheduleEndMinutes = scheduleEnd,
                     triggerApps = selectedApps.joinToString(","),
-                    priorityApps = selectedPriorityApps.joinToString(",")
+                    priorityApps = selectedPriorityApps.joinToString(","),
+                    triggerBluetoothAddress = selectedBluetoothAddress
                 )
             )
             onBack()
@@ -172,7 +186,8 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                 val options = listOf(
                     Triple(MuteProfile.TRIGGER_MANUAL, R.string.profile_editor_trigger_manual, Icons.Outlined.NotificationsPaused),
                     Triple(MuteProfile.TRIGGER_SCHEDULE, R.string.profile_editor_trigger_schedule, Icons.Outlined.Bedtime),
-                    Triple(MuteProfile.TRIGGER_APP_FOREGROUND, R.string.profile_editor_trigger_app, Icons.Outlined.SportsEsports)
+                    Triple(MuteProfile.TRIGGER_APP_FOREGROUND, R.string.profile_editor_trigger_app, Icons.Outlined.SportsEsports),
+                    Triple(MuteProfile.TRIGGER_BLUETOOTH, R.string.profile_editor_trigger_bluetooth, Icons.Outlined.Bluetooth)
                 )
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                     options.forEachIndexed { index, (type, labelRes, icon) ->
@@ -228,6 +243,29 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
                     }
+                    MuteProfile.TRIGGER_BLUETOOTH -> {
+                        if (!hasBluetoothAccess) {
+                            Row(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
+                                Text(
+                                    stringResource(R.string.profile_editor_bluetooth_access_needed),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.error,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                FilledTonalButton(onClick = {
+                                    bluetoothPermissionLauncher.launch(android.Manifest.permission.BLUETOOTH_CONNECT)
+                                }) {
+                                    Text(stringResource(R.string.grant))
+                                }
+                            }
+                        } else {
+                            Text(
+                                stringResource(R.string.profile_editor_pick_device),
+                                style = MaterialTheme.typography.titleSmall,
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )
+                        }
+                    }
                     else -> {}
                 }
             }
@@ -241,6 +279,35 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                             selectedApps = if (checked) selectedApps + app.packageName else selectedApps - app.packageName
                         },
                         onSettingsClick = {}
+                    )
+                }
+            }
+
+            if (triggerType == MuteProfile.TRIGGER_BLUETOOTH && hasBluetoothAccess) {
+                val devices = remember { getBondedBluetoothDevices(context) }
+                if (devices.isEmpty()) {
+                    item {
+                        Text(
+                            stringResource(R.string.profile_editor_no_devices),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                }
+                items(devices, key = { it.first }) { (address, deviceName) ->
+                    ListOptionCard(
+                        title = deviceName,
+                        subtitle = address,
+                        icon = Icons.Outlined.Bluetooth,
+                        shape = RoundedCornerShape(4.dp),
+                        onClick = { selectedBluetoothAddress = address },
+                        trailingContent = {
+                            RadioButton(
+                                selected = selectedBluetoothAddress == address,
+                                onClick = { selectedBluetoothAddress = address }
+                            )
+                        }
                     )
                 }
             }

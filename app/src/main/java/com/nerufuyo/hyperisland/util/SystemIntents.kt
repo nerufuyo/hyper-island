@@ -120,3 +120,28 @@ fun getForegroundPackageName(context: Context): String? {
         null
     }
 }
+
+/**
+ * Checks if Bluetooth Connect permission (Android 12+) is granted - needed for
+ * Bluetooth-triggered Mute Profiles to see paired device names and connection broadcasts.
+ */
+fun isBluetoothConnectGranted(context: Context): Boolean {
+    return androidx.core.content.ContextCompat.checkSelfPermission(
+        context, android.Manifest.permission.BLUETOOTH_CONNECT
+    ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+}
+
+/**
+ * Paired (bonded) Bluetooth devices as address-to-name pairs, for the profile editor's device
+ * picker. Bonded just means "paired at some point", not "connected right now" - that's tracked
+ * separately by NotificationReaderService via ACL_CONNECTED/DISCONNECTED broadcasts.
+ */
+fun getBondedBluetoothDevices(context: Context): List<Pair<String, String>> {
+    if (!isBluetoothConnectGranted(context)) return emptyList()
+    return try {
+        val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager
+        manager.adapter?.bondedDevices?.map { it.address to (it.name ?: it.address) } ?: emptyList()
+    } catch (_: Exception) {
+        emptyList()
+    }
+}

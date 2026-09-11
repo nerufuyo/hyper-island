@@ -17,6 +17,11 @@
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
+    <!-- Bluetooth-triggered Mute Profiles: know which paired device is connected right now
+         (e.g. car/headset). Standard runtime-permission dialog, requested from
+         ProfileEditorScreen - not a Settings deep-link like Usage Access above. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
     <queries>
         <intent>
             <action android:name="android.appwidget.action.APPWIDGET_PICK" />

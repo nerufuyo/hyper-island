@@ -23,6 +23,11 @@ class MuteProfileTest {
         triggerApps = apps
     )
 
+    private fun bluetooth(address: String, enabled: Boolean = true) = MuteProfile(
+        id = "4", name = "Bluetooth", enabled = enabled, triggerType = MuteProfile.TRIGGER_BLUETOOTH,
+        triggerBluetoothAddress = address
+    )
+
     // --- activeProfiles() ---
 
     @Test
@@ -53,6 +58,19 @@ class MuteProfileTest {
         assertEquals(1, NotificationReaderService.activeProfiles(profiles, 12 * 60, "com.game.a").size)
         assertTrue(NotificationReaderService.activeProfiles(profiles, 12 * 60, "com.other.app").isEmpty())
         assertTrue(NotificationReaderService.activeProfiles(profiles, 12 * 60, null).isEmpty())
+    }
+
+    @Test
+    fun bluetoothProfile_matchesOnlyWhenConnected() {
+        val profiles = listOf(bluetooth("AA:BB:CC:00:11:22"))
+        assertEquals(
+            1,
+            NotificationReaderService.activeProfiles(profiles, 12 * 60, null, setOf("AA:BB:CC:00:11:22")).size
+        )
+        assertTrue(
+            NotificationReaderService.activeProfiles(profiles, 12 * 60, null, setOf("FF:FF:FF:FF:FF:FF")).isEmpty()
+        )
+        assertTrue(NotificationReaderService.activeProfiles(profiles, 12 * 60, null, emptySet()).isEmpty())
     }
 
     // --- isMutedByProfiles() (priority apps / "Allowed Notifications") ---

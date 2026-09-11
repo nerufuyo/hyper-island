@@ -198,6 +198,8 @@ class PermanentIslandManager(
             notification.extras.putString("miui.focus.param", data.jsonParam)
 
             ShizukuManager.notify(context, PERMANENT_BRIDGE_ID, notification)
+        } catch (e: SecurityException) {
+            Log.e(TAG, "Missing POST_NOTIFICATIONS permission for permanent island", e)
         } catch (e: Exception) {
             Log.e(TAG, "Error dispatching permanent island", e)
         }

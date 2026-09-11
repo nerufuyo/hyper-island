@@ -64,6 +64,25 @@ class NotificationReaderService : NotificationListenerService() {
     private val TAG = "HyperIslandDebug"
     private val EXTRA_ORIGINAL_KEY = "hyper_original_key"
 
+    // ponytail: temporary capture hook for ride-hailing integration (Gojek/Grab/Maxim).
+    // Dumps raw notification extras for these packages to Logcat so a real sample can be
+    // reverse-engineered into a proper translator. Remove once those translators exist.
+    private val rideHailingCapturePackages = setOf(
+        "com.gojek.app",        // Gojek
+        "com.grabtaxi.passenger", // Grab
+        "com.taxsee.taxsee"     // Maxim
+    )
+
+    private fun captureRideHailingNotification(sbn: StatusBarNotification) {
+        if (sbn.packageName !in rideHailingCapturePackages) return
+        val extras = sbn.notification.extras
+        val dump = extras.keySet().sorted().joinToString("\n") { key -> "  $key = ${extras.get(key)}" }
+        Log.i(
+            "HyperIslandCapture",
+            "=== ${sbn.packageName} | category=${sbn.notification.category} | key=${sbn.key} ===\n$dump"
+        )
+    }
+
     // --- CHANNELS ---
     private val NOTIFICATION_CHANNEL_ID = "hyper_bridge_notification_channel"
     private val WIDGET_CHANNEL_ID = "hyper_bridge_widget_channel"
@@ -597,6 +616,8 @@ class NotificationReaderService : NotificationListenerService() {
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         sbn?.let {
+            captureRideHailingNotification(it)
+
             if (it.packageName != packageName) {
                 val extras = it.notification.extras
                 var isNative = false

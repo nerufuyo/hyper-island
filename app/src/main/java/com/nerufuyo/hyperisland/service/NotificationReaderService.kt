@@ -115,7 +115,13 @@ class NotificationReaderService : NotificationListenerService() {
         "com.taxsee.taxsee" to "ride-hailing (Maxim)",
         // GPS tracker / fitness (Workout-style live activity - distance/pace/time, not turn-by-turn)
         "com.strava" to "fitness (Strava)",
-        "com.nike.plusgps" to "fitness (Nike Run Club)"
+        "com.nike.plusgps" to "fitness (Nike Run Club)",
+        // Live sports scores
+        "com.sofascore.results" to "sports score (SofaScore)",
+        // Parcel/courier tracking
+        "com.indivara.jneone" to "courier tracking (My JNE)",
+        "com.msd.JTClient" to "courier tracking (J&T Express Indonesia)",
+        "com.sicepat.consumer" to "courier tracking (SiCepat Ekspres)"
     )
 
     private fun captureNotificationForResearch(sbn: StatusBarNotification) {

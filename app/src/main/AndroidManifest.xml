@@ -116,6 +116,17 @@
             android:enabled="true"
             android:exported="false" />
 
+        <service
+            android:name=".service.IslandDndTileService"
+            android:label="Mute Islands"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

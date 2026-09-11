@@ -28,6 +28,11 @@ private val Context.legacyDataStore: DataStore<Preferences> by preferencesDataSt
 
 class AppPreferences(context: Context) {
 
+    companion object {
+        const val DEFAULT_DND_SCHEDULE_START_MINUTES = 22 * 60 // 22:00
+        const val DEFAULT_DND_SCHEDULE_END_MINUTES = 7 * 60    // 07:00
+    }
+
     private val dao = AppDatabase.getDatabase(context).settingsDao()
     private val legacyDataStore = context.applicationContext.legacyDataStore
 
@@ -485,6 +490,20 @@ class AppPreferences(context: Context) {
 
     val autoDetectDndFlow: Flow<Boolean> = dao.getSettingFlow("auto_detect_dnd").map { it.toBoolean(false) }
     suspend fun setAutoDetectDnd(autoDetect: Boolean) = save("auto_detect_dnd", autoDetect.toString())
+
+    // Scheduled DND: mute islands automatically during a daily time window.
+    // Times are stored as minutes-since-midnight (0-1439). start > end means the
+    // window spans midnight (e.g. 22:00 -> 07:00), handled in isWithinDndSchedule().
+    val dndScheduleEnabledFlow: Flow<Boolean> = dao.getSettingFlow("dnd_schedule_enabled").map { it.toBoolean(false) }
+    suspend fun setDndScheduleEnabled(isEnabled: Boolean) = save("dnd_schedule_enabled", isEnabled.toString())
+
+    val dndScheduleStartMinutesFlow: Flow<Int> =
+        dao.getSettingFlow("dnd_schedule_start_minutes").map { it.toInt(DEFAULT_DND_SCHEDULE_START_MINUTES) }
+    suspend fun setDndScheduleStartMinutes(minutes: Int) = save("dnd_schedule_start_minutes", minutes.toString())
+
+    val dndScheduleEndMinutesFlow: Flow<Int> =
+        dao.getSettingFlow("dnd_schedule_end_minutes").map { it.toInt(DEFAULT_DND_SCHEDULE_END_MINUTES) }
+    suspend fun setDndScheduleEndMinutes(minutes: Int) = save("dnd_schedule_end_minutes", minutes.toString())
 
     // --- APP-SPECIFIC ENGINE OVERRIDES ---
 

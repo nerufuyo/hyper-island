@@ -51,6 +51,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -59,6 +60,19 @@ class NotificationReaderService : NotificationListenerService() {
     companion object {
         const val ACTION_RELOAD_THEME = "com.nerufuyo.hyperisland.ACTION_RELOAD_THEME"
         const val ACTION_PERFORM_MIGRATION = "com.nerufuyo.hyperisland.ACTION_PERFORM_MIGRATION"
+
+        /**
+         * Pure time-window check for scheduled DND, pulled out of isWithinDndSchedule()
+         * so it's testable without an Android Context. start > end means the window
+         * spans midnight (e.g. 22:00 -> 07:00).
+         */
+        internal fun isTimeWithinWindow(nowMinutes: Int, startMinutes: Int, endMinutes: Int): Boolean {
+            return if (startMinutes <= endMinutes) {
+                nowMinutes in startMinutes until endMinutes
+            } else {
+                nowMinutes >= startMinutes || nowMinutes < endMinutes
+            }
+        }
     }
 
     private val TAG = "HyperIslandDebug"
@@ -98,6 +112,9 @@ class NotificationReaderService : NotificationListenerService() {
     
     private var isDndModeEnabled = false
     private var autoDetectDnd = false
+    private var dndScheduleEnabled = false
+    private var dndScheduleStartMinutes = AppPreferences.DEFAULT_DND_SCHEDULE_START_MINUTES
+    private var dndScheduleEndMinutes = AppPreferences.DEFAULT_DND_SCHEDULE_END_MINUTES
 
     // --- CACHES ---
     private val recentlyRemovedKeys = ConcurrentHashMap<String, Long>()
@@ -234,6 +251,9 @@ class NotificationReaderService : NotificationListenerService() {
         serviceScope.launch { preferences.globalBlockedTermsFlow.collectLatest { globalBlockedTerms = it } }
         serviceScope.launch { preferences.isDndModeEnabledFlow.collectLatest { isDndModeEnabled = it } }
         serviceScope.launch { preferences.autoDetectDndFlow.collectLatest { autoDetectDnd = it } }
+        serviceScope.launch { preferences.dndScheduleEnabledFlow.collectLatest { dndScheduleEnabled = it } }
+        serviceScope.launch { preferences.dndScheduleStartMinutesFlow.collectLatest { dndScheduleStartMinutes = it } }
+        serviceScope.launch { preferences.dndScheduleEndMinutesFlow.collectLatest { dndScheduleEndMinutes = it } }
 
         // Listen for Theme Changes
         serviceScope.launch {
@@ -652,11 +672,22 @@ class NotificationReaderService : NotificationListenerService() {
         }
     }
 
+    /**
+     * True when "now" falls inside the configured scheduled-DND window.
+     * start > end means the window spans midnight (e.g. 22:00 -> 07:00).
+     */
+    private fun isWithinDndSchedule(): Boolean {
+        if (!dndScheduleEnabled) return false
+        val cal = Calendar.getInstance()
+        val nowMinutes = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE)
+        return isTimeWithinWindow(nowMinutes, dndScheduleStartMinutes, dndScheduleEndMinutes)
+    }
+
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private suspend fun processStandardNotification(rawSbn: StatusBarNotification) {
         val manager = getSystemService(NotificationManager::class.java)
         val isSystemDndActive = manager.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL
-        val dndActive = isDndModeEnabled || (autoDetectDnd && isSystemDndActive)
+        val dndActive = isDndModeEnabled || (autoDetectDnd && isSystemDndActive) || isWithinDndSchedule()
 
         if (dndActive) {
             Log.d(TAG, "DND active. Skipping notification ${rawSbn.packageName}")

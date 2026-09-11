@@ -32,7 +32,10 @@ import androidx.compose.material.icons.filled.Smartphone
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Layers
+import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.SportsEsports
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,6 +50,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -265,8 +269,46 @@ fun SetupHealthScreen(onBack: () -> Unit) {
                     onClick = { openBatterySettings(context) }
                 )
             }
+            Spacer(modifier = Modifier.height(24.dp))
 
-            // --- 4. WARNINGS ---
+            // --- 4. BACKGROUND ACTIVITY ---
+            // Transparency for the battery question people always ask: these mechanisms only
+            // run at all because a Mute Profile is actually using them - zero profiles of a
+            // given trigger type means zero background cost from that mechanism. Green = none
+            // active right now (cheapest state); the color isn't "broken", just "this is
+            // currently costing you a little more than nothing".
+            HealthSectionTitle(stringResource(R.string.background_activity_title))
+            HealthGroupCard {
+                val muteProfileDao = remember { com.nerufuyo.hyperisland.data.db.AppDatabase.getDatabase(context).muteProfileDao() }
+                val profiles by muteProfileDao.getAllFlow().collectAsState(initial = emptyList())
+                val enabledProfiles = profiles.filter { it.enabled }
+                val locationCount = enabledProfiles.count { it.triggerType == com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_LOCATION }
+                val bluetoothCount = enabledProfiles.count { it.triggerType == com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_BLUETOOTH }
+                val appForegroundCount = enabledProfiles.count { it.triggerType == com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_APP_FOREGROUND }
+
+                StatusRow(
+                    title = stringResource(R.string.background_activity_geofence),
+                    subtitle = stringResource(R.string.background_activity_profile_count, locationCount),
+                    isSuccess = locationCount == 0,
+                    icon = Icons.Outlined.LocationOn
+                )
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(0.2f))
+                StatusRow(
+                    title = stringResource(R.string.background_activity_bluetooth),
+                    subtitle = stringResource(R.string.background_activity_profile_count, bluetoothCount),
+                    isSuccess = bluetoothCount == 0,
+                    icon = Icons.Outlined.Bluetooth
+                )
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(0.2f))
+                StatusRow(
+                    title = stringResource(R.string.background_activity_app_check),
+                    subtitle = stringResource(R.string.background_activity_profile_count, appForegroundCount),
+                    isSuccess = appForegroundCount == 0,
+                    icon = Icons.Outlined.SportsEsports
+                )
+            }
+
+            // --- 5. WARNINGS ---
             if (isCN && isXiaomi) {
                 Spacer(Modifier.height(32.dp))
                 Card(

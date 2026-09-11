@@ -667,6 +667,11 @@
     <string name="profile_editor_location_name">Place name</string>
     <string name="profile_editor_location_name_placeholder">e.g. Home, Office</string>
     <string name="profile_editor_radius">Radius</string>
+    <string name="background_activity_title">Background Activity</string>
+    <string name="background_activity_geofence">Location Monitoring</string>
+    <string name="background_activity_bluetooth">Bluetooth Listener</string>
+    <string name="background_activity_app_check">App Usage Checks</string>
+    <string name="background_activity_profile_count">%1$d active profile(s) use this</string>
     <string name="profile_editor_start_time">Start time</string>
     <string name="profile_editor_end_time">End time</string>
     <string name="profile_editor_pick_apps">Apps that trigger this profile</string>

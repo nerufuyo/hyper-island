@@ -1,9 +1,7 @@
 package com.nerufuyo.hyperisland.service
 
-import android.Manifest
 import android.content.Context
 import android.util.Log
-import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import com.nerufuyo.hyperisland.R
 import com.nerufuyo.hyperisland.data.AppPreferences
@@ -159,7 +157,10 @@ class PermanentIslandManager(
             }
         }
     }
-    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    // Not @RequiresPermission: the only permission-gated call inside (ShizukuManager.notify)
+    // is fully wrapped below and never lets SecurityException escape to callers, so the
+    // annotation would incorrectly push a permission-check burden onto every call site below
+    // (including ones inside coroutine lambdas, where annotating the caller isn't possible).
     private fun dispatchPermanentIsland() {
         try {
             Log.d(TAG, "Dispatching permanent island")

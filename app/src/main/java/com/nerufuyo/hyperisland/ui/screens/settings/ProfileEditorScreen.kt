@@ -99,6 +99,7 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
     var hasBluetoothAccess by remember { mutableStateOf(isBluetoothConnectGranted(context)) }
     var selectedBluetoothAddress by remember { mutableStateOf("") }
     val apps by appListViewModel.libraryAppsState.collectAsState()
+    val bluetoothDevices = remember(hasBluetoothAccess) { getBondedBluetoothDevices(context) }
 
     val bluetoothPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
@@ -284,8 +285,7 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
             }
 
             if (triggerType == MuteProfile.TRIGGER_BLUETOOTH && hasBluetoothAccess) {
-                val devices = remember { getBondedBluetoothDevices(context) }
-                if (devices.isEmpty()) {
+                if (bluetoothDevices.isEmpty()) {
                     item {
                         Text(
                             stringResource(R.string.profile_editor_no_devices),
@@ -295,7 +295,7 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                         )
                     }
                 }
-                items(devices, key = { it.first }) { (address, deviceName) ->
+                items(bluetoothDevices, key = { it.first }) { (address, deviceName) ->
                     ListOptionCard(
                         title = deviceName,
                         subtitle = address,

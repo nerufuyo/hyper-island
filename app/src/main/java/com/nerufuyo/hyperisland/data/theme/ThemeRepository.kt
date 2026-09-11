@@ -8,20 +8,76 @@ import android.util.Log
 import androidx.core.net.toUri
 import com.nerufuyo.hyperisland.models.theme.ActionConfig
 import com.nerufuyo.hyperisland.models.theme.AppThemeOverride
+import com.nerufuyo.hyperisland.models.theme.ColorMode
+import com.nerufuyo.hyperisland.models.theme.GlobalConfig
 import com.nerufuyo.hyperisland.models.theme.HyperTheme
 import com.nerufuyo.hyperisland.models.theme.ResourceType
+import com.nerufuyo.hyperisland.models.theme.ThemeMetadata
 import com.nerufuyo.hyperisland.models.theme.ThemeResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.UUID
 import java.util.zip.ZipInputStream
 
 class ThemeRepository(private val context: Context) {
+
+    companion object {
+        // ponytail: Minimal/Monochrome batch only for now - add more BUILT_IN_PRESETS
+        // entries (Vibrant, Pastel, ...) once there's a direction for them.
+        internal val BUILT_IN_PRESETS = listOf(
+            HyperTheme(
+                id = "builtin_minimal_onyx",
+                meta = ThemeMetadata(
+                    name = "Onyx",
+                    author = "Hyper Island",
+                    description = "Pure black, minimal contrast."
+                ),
+                global = GlobalConfig(
+                    highlightColor = "#000000",
+                    backgroundColor = "#000000",
+                    textColor = "#FFFFFF",
+                    colorMode = ColorMode.CUSTOM,
+                    iconShapeId = "circle"
+                )
+            ),
+            HyperTheme(
+                id = "builtin_minimal_slate",
+                meta = ThemeMetadata(
+                    name = "Slate",
+                    author = "Hyper Island",
+                    description = "Neutral dark gray, easy on the eyes."
+                ),
+                global = GlobalConfig(
+                    highlightColor = "#3A3A3C",
+                    backgroundColor = "#1C1C1E",
+                    textColor = "#FFFFFF",
+                    colorMode = ColorMode.CUSTOM,
+                    iconShapeId = "squircle"
+                )
+            ),
+            HyperTheme(
+                id = "builtin_minimal_paper",
+                meta = ThemeMetadata(
+                    name = "Paper",
+                    author = "Hyper Island",
+                    description = "Clean off-white, built for light mode."
+                ),
+                global = GlobalConfig(
+                    highlightColor = "#F2F2F7",
+                    backgroundColor = "#FFFFFF",
+                    textColor = "#1C1C1E",
+                    colorMode = ColorMode.CUSTOM,
+                    iconShapeId = "circle"
+                )
+            )
+        )
+    }
 
     private val tag = "HyperIslandTheme"
     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
@@ -33,6 +89,31 @@ class ThemeRepository(private val context: Context) {
 
     init {
         if (!themesDir.exists()) themesDir.mkdirs()
+        seedBuiltInPresets()
+    }
+
+    /**
+     * Installs the bundled Minimal/Monochrome presets on first run, using the same
+     * on-disk format as an imported .hbr theme so they show up in getAvailableThemes()
+     * with no other changes needed. Guarded by a marker file so a user who deletes a
+     * preset doesn't get it silently reinstalled.
+     *
+     * ponytail: more preset styles (Vibrant, Pastel, ...) can be added the same way -
+     * append to BUILT_IN_PRESETS - once there's a direction for them.
+     */
+    private fun seedBuiltInPresets() {
+        val marker = File(themesDir, ".presets_seeded")
+        if (marker.exists()) return
+        BUILT_IN_PRESETS.forEach { theme ->
+            val folder = File(themesDir, theme.id)
+            if (!folder.exists()) {
+                folder.mkdirs()
+                runCatching {
+                    File(folder, "theme_config.json").writeText(json.encodeToString(theme))
+                }.onFailure { Log.e(tag, "Failed to seed preset ${theme.id}", it) }
+            }
+        }
+        runCatching { marker.createNewFile() }
     }
 
     /**

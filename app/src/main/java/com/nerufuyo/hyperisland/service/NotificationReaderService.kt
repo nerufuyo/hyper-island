@@ -140,6 +140,7 @@ class NotificationReaderService : NotificationListenerService() {
     private val STANDARD_ISLAND_TIMEOUT_MS = 60_000L
 
     private lateinit var preferences: AppPreferences
+    private val historyDao by lazy { com.nerufuyo.hyperisland.data.db.AppDatabase.getDatabase(applicationContext).islandHistoryDao() }
 
     // --- THEME ENGINE ---
     private lateinit var themeRepository: ThemeRepository
@@ -920,6 +921,21 @@ class NotificationReaderService : NotificationListenerService() {
 
             Log.i(TAG, " POSTING Island -> ID: $bridgeId, Type: $type, FinalTitle: '$effectiveTitle', FinalText: '$effectiveText'")
             postStandardNotification(sbn, bridgeId, data, shouldAlertOnce)
+
+            // Fire-and-forget: never let a slow DB write delay/affect the island itself.
+            serviceScope.launch(Dispatchers.IO) {
+                runCatching {
+                    historyDao.insert(
+                        com.nerufuyo.hyperisland.data.db.IslandHistoryEntry(
+                            packageName = sbn.packageName,
+                            title = effectiveTitle,
+                            text = effectiveText,
+                            timestamp = System.currentTimeMillis()
+                        )
+                    )
+                    historyDao.trimTo(200)
+                }.onFailure { Log.e(TAG, "Failed to record island history", it) }
+            }
 
             activeIslands[effectiveKey] = ActiveIsland(
                 id = bridgeId, type = type, postTime = System.currentTimeMillis(),

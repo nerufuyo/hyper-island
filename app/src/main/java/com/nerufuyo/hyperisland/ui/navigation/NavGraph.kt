@@ -18,6 +18,7 @@ import com.nerufuyo.hyperisland.ui.screens.settings.GlobalBlocklistScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.GlobalSettingsScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.ImportPreviewScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.InfoScreen
+import com.nerufuyo.hyperisland.ui.screens.settings.IslandHistoryScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.IslandSettingsScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.LicensesScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.NavCustomizationScreen
@@ -71,11 +72,15 @@ fun mainNavGraph(
             onIslandSettingsClick = { navigator.navigate(Screen.IslandSettings) },
             onEngineSettingsClick = { navigator.navigate(Screen.EngineSettings) },
             onDndSettingsClick = { navigator.navigate(Screen.DndSettings) },
-            onPermanentIslandClick = { navigator.navigate(Screen.PermanentIslandConfig) }
+            onPermanentIslandClick = { navigator.navigate(Screen.PermanentIslandConfig) },
+            onIslandHistoryClick = { navigator.navigate(Screen.IslandActivity) }
         )
     }
     entry<Screen.DndSettings> {
         com.nerufuyo.hyperisland.ui.screens.settings.DndSettingsScreen(onBack = { navigator.goBack() })
+    }
+    entry<Screen.IslandActivity> {
+        IslandHistoryScreen(onBack = { navigator.goBack() })
     }
     entry<Screen.PermanentIslandConfig> {
         com.nerufuyo.hyperisland.ui.screens.settings.PermanentIslandConfigScreen(onBack = { navigator.goBack() })

@@ -637,6 +637,10 @@
     <string name="widget_theme_switcher_label">HYPER ISLAND THEME</string>
     <string name="widget_theme_switcher_description">Tap to cycle through your installed themes</string>
     <string name="widget_theme_switcher_none">Default</string>
+    <string name="island_history_title">Island Activity</string>
+    <string name="island_history_desc">Review islands that were recently shown</string>
+    <string name="island_history_clear">Clear history</string>
+    <string name="island_history_empty">No islands shown yet</string>
     <string name="behaviour_triggers"><![CDATA[Behaviour & Triggers]]></string>
     <string name="engine_timeouts_triggers"><![CDATA[Engine, timeouts & triggers]]></string>
     <string name="global_behavior">Global Behavior</string>

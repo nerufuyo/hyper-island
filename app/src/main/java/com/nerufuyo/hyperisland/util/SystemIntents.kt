@@ -141,6 +141,8 @@ fun getBondedBluetoothDevices(context: Context): List<Pair<String, String>> {
     return try {
         val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager
         manager.adapter?.bondedDevices?.map { it.address to (it.name ?: it.address) } ?: emptyList()
+    } catch (_: SecurityException) {
+        emptyList()
     } catch (_: Exception) {
         emptyList()
     }

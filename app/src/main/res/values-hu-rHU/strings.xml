@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hyper Bridge</string>
+    <string name="app_name">Hyper Island</string>
     <string name="back">Vissza</string>
     <string name="next">Tovább</string>
     <string name="finish">Befejezés</string>
@@ -10,11 +10,11 @@
     <string name="configure">Konfigurálás</string>
     <string name="clear">Törlés</string>
     <string name="sort_order">Rendezési sorrend</string>
-    <string name="welcome_title">Üdvözlünk a\nHyper Bridge-nél</string>
+    <string name="welcome_title">Üdvözlünk a\nHyper Island-nél</string>
     <string name="welcome_subtitle">Integráld zökkenőmentesen a HyperIslands-t a HyperOS élményébe.</string>
     <string name="get_started">Kezdj hozzá</string>
     <string name="how_it_works">Hogyan működik</string>
-    <string name="how_it_works_desc">Kiválaszthatod a kedvenc alkalmazásaid (Spotify, Térkép, Óra). A HyperBridge ezek értesítéseit stílusos HyperIsland-dé alakítja át.</string>
+    <string name="how_it_works_desc">Kiválaszthatod a kedvenc alkalmazásaid (Spotify, Térkép, Óra). A HyperIsland ezek értesítéseit stílusos HyperIsland-dé alakítja át.</string>
     <string name="beta_warning">Megjegyzés: Ez az alkalmazás béta verzióban van. Lehet, hogy hibákkal vagy helytelen vizuális információkkal találkozol.</string>
     <string name="device_compatible">Kompatibilis eszköz</string>
     <string name="unsupported_device">Nem támogatott eszköz</string>
@@ -36,7 +36,7 @@
     <string name="no_active_bridges_desc">Menj a Könyvtárba az alkalmazások engedélyezéséhez.</string>
     <string name="no_apps_found">Nincsenek alkalmazások</string>
     <string name="version_template">Verzió %s</string>
-    <string name="developer_credit">D4vidDf készítette</string>
+    <string name="developer_credit">nerufuyo készítette</string>
     <string name="group_configuration">Konfiguráció</string>
     <string name="system_setup">Rendszerbeállítás</string>
     <string name="system_setup_subtitle">Engedélyek és akkumulátor javítása</string>
@@ -47,7 +47,7 @@
     <string name="permanent_island_width">Island Width</string>
     <string name="group_about">Alkalmazásról</string>
     <string name="developer">Fejlesztő</string>
-    <string name="developer_subtitle">Keresd fel d4viddf.com</string>
+    <string name="developer_subtitle">Keresd fel github.com/nerufuyo</string>
     <string name="source_code">Forráskód</string>
     <string name="source_code_subtitle">GitHub adattároló</string>
     <string name="licenses">Nyílt forráskód licenszek</string>
@@ -136,7 +136,7 @@
         • &lt;b&gt;Fordítások:&lt;/b&gt; Hozzáadva a spanyol nyelv támogatása.
     </string>
     <string name="priority_edu_title">Újdonság: Vezéreld a Island-ot</string>
-    <string name="priority_edu_desc">A HyperBridge mostantól kezelni tudja, hogy több értesítés hogyan viselkedik, amikor eléri a 9-szigetes korlátot.\n\n&lt;b&gt;Alapértelmezett: Legújabb&lt;/b&gt;\nAz új értesítések automatikusan felülírják a legrégebbieket.</string>
+    <string name="priority_edu_desc">A HyperIsland mostantól kezelni tudja, hogy több értesítés hogyan viselkedik, amikor eléri a 9-szigetes korlátot.\n\n&lt;b&gt;Alapértelmezett: Legújabb&lt;/b&gt;\nAz új értesítések automatikusan felülírják a legrégebbieket.</string>
     <string name="badge_new">ÚJ</string>
     <string name="nav_layout_title">Navigációs elrendezés</string>
     <string name="nav_layout_desc">Információk megjelenési helyének kiválasztása</string>
@@ -230,7 +230,7 @@ Továbbfejlesztett felismerési logika a VoIP- és tárcsázóalkalmazások szé
         • Javítva a kompatibilitás-ellenőrző képernyő részletes eszközadatokkal.
     </string>
     <string name="privacy_title">100% offline és biztonságos</string>
-    <string name="privacy_desc">A Hyper Bridge mindent közvetlenül a telefon processzorán dolgoz fel.\n\nNem igényel internet-hozzáférést, vagyis az értesítések és a személyes adatok soha nem hagyják el az eszközt.</string>
+    <string name="privacy_desc">A Hyper Island mindent közvetlenül a telefon processzorán dolgoz fel.\n\nNem igényel internet-hozzáférést, vagyis az értesítések és a személyes adatok soha nem hagyják el az eszközt.</string>
     <string name="language">Nyelv</string>
     <string name="language_desc">Alkalmazás nyelvének kiválasztása</string>
     <string name="system_default">Rendszer nyelvének használata</string>
@@ -330,7 +330,7 @@ Továbbfejlesztett felismerési logika a VoIP- és tárcsázóalkalmazások szé
     <string name="theme_installer_success_title">Téma kész</string>
     <string name="theme_installer_author">Alkotó: %s</string>
     <string name="theme_installer_version">Verzió %d</string>
-    <string name="theme_installer_apply_question">Szeretnéd ezt a témát alkalmazni a HyperBridge-re?</string>
+    <string name="theme_installer_apply_question">Szeretnéd ezt a témát alkalmazni a HyperIsland-re?</string>
     <string name="theme_installer_action_apply">Téma alkalmazása</string>
     <string name="theme_installer_action_later">Mentés későbbre</string>
     <string name="theme_installer_error_title">Behozatal sikertelen</string>
@@ -486,7 +486,7 @@ Továbbfejlesztett felismerési logika a VoIP- és tárcsázóalkalmazások szé
     <string name="colors_desc_material_you">A háttérképed színeit használja</string>
     <string name="kill_all_widgets">Aktív modulok megölése</string>
     <string name="permission_reminder_title">Frissítési értesítés</string>
-    <string name="permission_reminder_desc">HyperBridge frissítve lett! Ellenőrizd, hogy az Automatikus indítás és a Háttérben való futás nem lett-e csendben elvéve a rendszer által, hogy a modulok továbbra is folyékonyan tudjanak működni.</string>
+    <string name="permission_reminder_desc">HyperIsland frissítve lett! Ellenőrizd, hogy az Automatikus indítás és a Háttérben való futás nem lett-e csendben elvéve a rendszer által, hogy a modulok továbbra is folyékonyan tudjanak működni.</string>
     <string name="got_it">Értem</string>
     <string name="recommended">Ajánlott</string>
     <string name="all">Mind</string>
@@ -542,7 +542,7 @@ Továbbfejlesztett felismerési logika a VoIP- és tárcsázóalkalmazások szé
     <string name="dismiss_with_original_desc">Island will disappear when you clear the original notification.</string>
     <string name="enable_inline_reply">Enable inline reply</string>
     <string name="enable_inline_reply_desc">Launch the custom inline reply overlay when replying from the island.</string>
-    <string name="remove_original_notification_hidden_warning">Note: When enabled, Hyper Bridge cannot respond or mark messages as read. Reply and Mark as Read actions will be hidden.</string>
+    <string name="remove_original_notification_hidden_warning">Note: When enabled, Hyper Island cannot respond or mark messages as read. Reply and Mark as Read actions will be hidden.</string>
     <string name="color_mode">Color Mode</string>
     <string name="color_mode_select">Select Color Mode</string>
     <string name="color_mode_change_cd">Change color mode</string>
@@ -625,15 +625,15 @@ Továbbfejlesztett felismerési logika a VoIP- és tárcsázóalkalmazások szé
     <string name="widget_went_wrong">If you are seeing this, something went wrong! The system couldn\'t show the widget</string>
     <string name="troubleshoot_featured_notification">Troubleshoot</string>
     <string name="featured_notifications_check">Featured Notifications Check</string>
-    <string name="featured_notifications_check_desc">Let\'s verify if your system is configured correctly to display HyperBridge islands.</string>
+    <string name="featured_notifications_check_desc">Let\'s verify if your system is configured correctly to display HyperIsland islands.</string>
     <string name="featured_notifications_not_supported">Not Supported</string>
     <string name="featured_notifications_enabled">Enabled</string>
     <string name="featured_notifications_open_settings">Open System Settings</string>
     <string name="featured_notifications_troubleshoot_title">Why is this not an island?</string>
-    <string name="featured_notifications_troubleshoot_desc">Your Xiaomi device intercepted the notification but failed to display it as a featured island because the permission is disabled in your system settings.\n\nTo fix this:\n1. Tap \"Open System Settings\"\n2. Scroll down to \"Featured Notifications\" (or similar)\n3. Enable it for HyperBridge.</string>
+    <string name="featured_notifications_troubleshoot_desc">Your Xiaomi device intercepted the notification but failed to display it as a featured island because the permission is disabled in your system settings.\n\nTo fix this:\n1. Tap \"Open System Settings\"\n2. Scroll down to \"Featured Notifications\" (or similar)\n3. Enable it for HyperIsland.</string>
     <string name="featured_notifications_shizuku_alternative">Alternative: Shizuku Override</string>
-    <string name="featured_notifications_shizuku_desc">If your system doesn\'t show the setting or it\'s restricted, you can bypass the Xiaomi whitelist entirely by setting up Shizuku. HyperBridge will use Shizuku to post islands directly.</string>
-    <string name="migration_title">HyperBridge Update</string>
+    <string name="featured_notifications_shizuku_desc">If your system doesn\'t show the setting or it\'s restricted, you can bypass the Xiaomi whitelist entirely by setting up Shizuku. HyperIsland will use Shizuku to post islands directly.</string>
+    <string name="migration_title">HyperIsland Update</string>
     <string name="migration_message">Migrating database to Device Protected storage…</string>
     <string name="migration_complete">Update Complete</string>
     <string name="notification_management">Notification Management</string>

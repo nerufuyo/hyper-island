@@ -6,13 +6,13 @@ plugins {
 }
 
 android {
-    namespace = "com.d4viddf.hyperbridge"
+    namespace = "com.nerufuyo.hyperisland"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.d4viddf.hyperbridge"
+        applicationId = "com.nerufuyo.hyperisland"
         minSdk = 35
         targetSdk = 37
         versionCode = 33

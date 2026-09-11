@@ -1,5 +1,5 @@
 name: 💡 Feature Request
-description: Suggest an idea or improvement for HyperBridge
+description: Suggest an idea or improvement for HyperIsland
 title: "[FEAT] "
 labels: ["enhancement"]
 assignees:
@@ -8,7 +8,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for your interest in improving HyperBridge!
+        Thanks for your interest in improving HyperIsland!
         Please verify that your idea hasn't already been suggested by searching the existing issues.
 
   - type: textarea

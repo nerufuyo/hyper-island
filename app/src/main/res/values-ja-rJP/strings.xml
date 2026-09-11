@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hyper Bridge</string>
+    <string name="app_name">Hyper Island</string>
 
     <string name="back">戻る</string>
     <string name="next">次へ</string>
@@ -12,12 +12,12 @@
     <string name="clear">クリア</string>
     <string name="sort_order">並び順</string>
 
-    <string name="welcome_title">Hyper Bridgeへ\nようこそ</string>
+    <string name="welcome_title">Hyper Islandへ\nようこそ</string>
     <string name="welcome_subtitle">HyperIslandsをHyperOSにシームレスに統合します。</string>
     <string name="get_started">はじめる</string>
 
     <string name="how_it_works">使い方</string>
-    <string name="how_it_works_desc">お気に入りのアプリ（Spotify、マップ、タイマーなど）を選択してください。HyperBridgeが通知をスタイリッシュなHyperIslandに変換します。</string>
+    <string name="how_it_works_desc">お気に入りのアプリ（Spotify、マップ、タイマーなど）を選択してください。HyperIslandが通知をスタイリッシュなHyperIslandに変換します。</string>
     <string name="beta_warning">注意: このアプリはベータ版です。不具合や表示の誤りが発生する場合があります。</string>
 
     <string name="device_compatible">対応デバイス</string>
@@ -46,7 +46,7 @@
     <string name="no_apps_found">アプリが見つかりません</string>
 
     <string name="version_template">バージョン %s</string>
-    <string name="developer_credit">by D4vidDf</string>
+    <string name="developer_credit">by nerufuyo</string>
 
     <string name="group_configuration">設定</string>
     <string name="system_setup">システム設定</string>
@@ -54,7 +54,7 @@
 
     <string name="group_about">アプリについて</string>
     <string name="developer">開発者</string>
-    <string name="developer_subtitle">d4viddf.comにアクセス</string>
+    <string name="developer_subtitle">github.com/nerufuyoにアクセス</string>
     <string name="source_code">ソースコード</string>
     <string name="source_code_subtitle">GitHubリポジトリ</string>
     <string name="licenses">オープンソースライセンス</string>
@@ -278,7 +278,7 @@
     </string>
 
     <string name="privacy_title">完全オフライン＆セキュア</string>
-    <string name="privacy_desc">Hyper Bridgeはすべての処理をスマートフォンのプロセッサ上で直接行います。\n\nインターネット接続を必要としないため、通知や個人データが端末の外に送信されることはありません。</string>
+    <string name="privacy_desc">Hyper Islandはすべての処理をスマートフォンのプロセッサ上で直接行います。\n\nインターネット接続を必要としないため、通知や個人データが端末の外に送信されることはありません。</string>
 
     <string name="language">言語</string>
     <string name="language_desc">アプリの言語を変更</string>
@@ -401,7 +401,7 @@
     <string name="theme_installer_success_title">テーマの準備が完了しました</string>
     <string name="theme_installer_author">作成者: %s</string>
     <string name="theme_installer_version">バージョン %d</string>
-    <string name="theme_installer_apply_question">このテーマを今すぐHyperBridgeに適用しますか？</string>
+    <string name="theme_installer_apply_question">このテーマを今すぐHyperIslandに適用しますか？</string>
     <string name="theme_installer_action_apply">テーマを適用</string>
     <string name="theme_installer_action_later">後で使用するため保存</string>
     <string name="theme_installer_error_title">インポートに失敗しました</string>
@@ -583,7 +583,7 @@
 
     <string name="kill_all_widgets">有効なウィジェットを終了</string>
     <string name="permission_reminder_title">更新のお知らせ</string>
-    <string name="permission_reminder_desc">HyperBridgeが更新されました！ウィジェットを問題なく動作させるため、自動起動とバックグラウンドでのバッテリー使用権限が、システムによって無効化されていないかご確認ください。</string>
+    <string name="permission_reminder_desc">HyperIslandが更新されました！ウィジェットを問題なく動作させるため、自動起動とバックグラウンドでのバッテリー使用権限が、システムによって無効化されていないかご確認ください。</string>
     <string name="got_it">わかりました</string>
 
     <string name="recommended">おすすめ</string>

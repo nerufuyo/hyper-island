@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hyper Bridge</string>
+    <string name="app_name">Hyper Island</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
     <string name="finish">Finish</string>
@@ -10,11 +10,11 @@
     <string name="configure">Configure</string>
     <string name="clear">Clear</string>
     <string name="sort_order">Sort Order</string>
-    <string name="welcome_title">Welcome to\nHyper Bridge</string>
+    <string name="welcome_title">Welcome to\nHyper Island</string>
     <string name="welcome_subtitle">Seamlessly integrate HyperIslands into your HyperOS experience.</string>
     <string name="get_started">Get Started</string>
     <string name="how_it_works">How it Works</string>
-    <string name="how_it_works_desc">Select your favorite apps (Spotify, Maps, Timer). HyperBridge transforms their notifications into a sleek HyperIsland.</string>
+    <string name="how_it_works_desc">Select your favorite apps (Spotify, Maps, Timer). HyperIsland transforms their notifications into a sleek HyperIsland.</string>
     <string name="beta_warning">Note: This app is in Beta. You may encounter bugs or incorrect visual information.</string>
     <string name="device_compatible">Device Compatible</string>
     <string name="unsupported_device">Unsupported Device</string>
@@ -36,13 +36,13 @@
     <string name="no_active_bridges_desc">Go to Library to enable apps.</string>
     <string name="no_apps_found">No apps found</string>
     <string name="version_template">Version %s</string>
-    <string name="developer_credit">by D4vidDf</string>
+    <string name="developer_credit">by nerufuyo</string>
     <string name="group_configuration">Configuration</string>
     <string name="system_setup">System Setup</string>
     <string name="system_setup_subtitle">Fix permissions &amp; battery</string>
     <string name="group_about">About</string>
     <string name="developer">Developer</string>
-    <string name="developer_subtitle">Visit d4viddf.com</string>
+    <string name="developer_subtitle">Visit github.com/nerufuyo</string>
     <string name="source_code">Source Code</string>
     <string name="source_code_subtitle">GitHub Repository</string>
     <string name="licenses">Open Source Licenses</string>
@@ -133,7 +133,7 @@
         • &lt;b&gt;Localization:&lt;/b&gt; Added Spanish support.
     </string>
     <string name="priority_edu_title">New: Control the Island</string>
-    <string name="priority_edu_desc">HyperBridge can now manage how multiple notifications behave when the 9-island limit is reached.\n\n&lt;b&gt;Default: Most Recent&lt;/b&gt;\nNew notifications replace the oldest ones automatically.</string>
+    <string name="priority_edu_desc">HyperIsland can now manage how multiple notifications behave when the 9-island limit is reached.\n\n&lt;b&gt;Default: Most Recent&lt;/b&gt;\nNew notifications replace the oldest ones automatically.</string>
     <string name="badge_new">NEW</string>
     <string name="nav_layout_title">Navigation Layout</string>
     <string name="nav_layout_desc">Choose where information appears</string>
@@ -219,7 +219,7 @@
         • Improved Compatibility Check screen with detailed device info.
     </string>
     <string name="privacy_title">100% Offline &amp; Secure</string>
-    <string name="privacy_desc">Hyper Bridge processes everything directly on your phone\'s processor.\n\nIt does NOT require internet access, meaning your notifications and personal data never leave your device.</string>
+    <string name="privacy_desc">Hyper Island processes everything directly on your phone\'s processor.\n\nIt does NOT require internet access, meaning your notifications and personal data never leave your device.</string>
     <string name="language">Language</string>
     <string name="language_desc">Change application language</string>
     <string name="system_default">System Default</string>
@@ -319,7 +319,7 @@
     <string name="theme_installer_success_title">Theme Ready</string>
     <string name="theme_installer_author">Created by %s</string>
     <string name="theme_installer_version">Version %d</string>
-    <string name="theme_installer_apply_question">Do you want to apply this theme to HyperBridge now?</string>
+    <string name="theme_installer_apply_question">Do you want to apply this theme to HyperIsland now?</string>
     <string name="theme_installer_action_apply">Apply Theme</string>
     <string name="theme_installer_action_later">Save for Later</string>
     <string name="theme_installer_error_title">Import Failed</string>

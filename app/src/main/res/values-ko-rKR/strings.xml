@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hyper Bridge</string>
+    <string name="app_name">Hyper Island</string>
     <string name="back">뒤로</string>
     <string name="next">다음</string>
     <string name="finish">완료</string>
@@ -10,11 +10,11 @@
     <string name="configure">설정하기</string>
     <string name="clear">지우기</string>
     <string name="sort_order">정렬 순서</string>
-    <string name="welcome_title">Hyper Bridge에 오신 것을\n환영합니다</string>
+    <string name="welcome_title">Hyper Island에 오신 것을\n환영합니다</string>
     <string name="welcome_subtitle">HyperIslands를 HyperOS 시스템에 쉽게 통합하세요.</string>
     <string name="get_started">시작하기</string>
     <string name="how_it_works">작동 방식</string>
-    <string name="how_it_works_desc">좋아하는 앱(Spotify, 지도, 타이머)을 선택하세요. HyperBridge가 알림을 아름다운 HyperIsland로 변환합니다.</string>
+    <string name="how_it_works_desc">좋아하는 앱(Spotify, 지도, 타이머)을 선택하세요. HyperIsland가 알림을 아름다운 HyperIsland로 변환합니다.</string>
     <string name="beta_warning">참고: 이 앱은 베타 버전입니다. 오류나 시각적 문제가 발생할 수 있습니다.</string>
     <string name="device_compatible">호환되는 기기</string>
     <string name="unsupported_device">지원되지 않는 기기</string>
@@ -36,7 +36,7 @@
     <string name="no_active_bridges_desc">라이브러리에서 앱을 활성화하세요.</string>
     <string name="no_apps_found">앱을 찾을 수 없습니다</string>
     <string name="version_template">버전 %s</string>
-    <string name="developer_credit">D4vidDf 제작</string>
+    <string name="developer_credit">nerufuyo 제작</string>
     <string name="group_configuration">구성</string>
     <string name="system_setup">시스템 설정</string>
     <string name="system_setup_subtitle">권한 및 배터리 문제 해결</string>
@@ -47,7 +47,7 @@
     <string name="permanent_island_width">Island Width</string>
     <string name="group_about">앱 정보</string>
     <string name="developer">개발자</string>
-    <string name="developer_subtitle">d4viddf.com 방문</string>
+    <string name="developer_subtitle">github.com/nerufuyo 방문</string>
     <string name="source_code">소스 코드</string>
     <string name="source_code_subtitle">GitHub 저장소</string>
     <string name="licenses">오픈소스 라이선스</string>
@@ -136,7 +136,7 @@
         • &lt;b&gt;현지화:&lt;/b&gt; 스페인어 지원이 추가되었습니다.
     </string>
     <string name="priority_edu_title">새 기능: 섬 제어</string>
-    <string name="priority_edu_desc">HyperBridge는 이제 9개 제한에 도달했을 때 여러 알림을 어떻게 처리할지 관리할 수 있습니다.\n\n<b>기본값: 최신순</b>\n새로운 알림이 오래된 알림을 자동으로 대체합니다.</string>
+    <string name="priority_edu_desc">HyperIsland는 이제 9개 제한에 도달했을 때 여러 알림을 어떻게 처리할지 관리할 수 있습니다.\n\n<b>기본값: 최신순</b>\n새로운 알림이 오래된 알림을 자동으로 대체합니다.</string>
     <string name="badge_new">신규</string>
     <string name="nav_layout_title">내비게이션 레이아웃</string>
     <string name="nav_layout_desc">표시할 정보를 선택하세요</string>
@@ -225,7 +225,7 @@
                 • 기기 정보를 포함한 호환성 검사 화면 개선\n
     </string>
     <string name="privacy_title">100% 오프라인 &amp; 보안</string>
-    <string name="privacy_desc">Hyper Bridge는 모든 작업을 휴대폰의 프로세서에서 직접 처리합니다.\n\n인터넷 연결이 필요하지 않으며, 이는 알림과 개인 데이터가 절대 기기를 떠나지 않음을 의미합니다.</string>
+    <string name="privacy_desc">Hyper Island는 모든 작업을 휴대폰의 프로세서에서 직접 처리합니다.\n\n인터넷 연결이 필요하지 않으며, 이는 알림과 개인 데이터가 절대 기기를 떠나지 않음을 의미합니다.</string>
     <string name="language">언어</string>
     <string name="language_desc">애플리케이션 언어 변경</string>
     <string name="system_default">시스템 기본값</string>
@@ -322,7 +322,7 @@
     <string name="theme_installer_success_title">Theme Ready</string>
     <string name="theme_installer_author">Created by %s</string>
     <string name="theme_installer_version">Version %d</string>
-    <string name="theme_installer_apply_question">Do you want to apply this theme to HyperBridge now?</string>
+    <string name="theme_installer_apply_question">Do you want to apply this theme to HyperIsland now?</string>
     <string name="theme_installer_action_apply">Apply Theme</string>
     <string name="theme_installer_action_later">Save for Later</string>
     <string name="theme_installer_error_title">Import Failed</string>
@@ -478,7 +478,7 @@
     <string name="colors_desc_material_you">Extracts colors from your current wallpaper.</string>
     <string name="kill_all_widgets">Kill Active Widgets</string>
     <string name="permission_reminder_title">Update Notice</string>
-    <string name="permission_reminder_desc">HyperBridge has been updated! Please ensure that your Autostart and Background Battery permissions haven\'t been silently revoked by the system to keep your widgets running smoothly.</string>
+    <string name="permission_reminder_desc">HyperIsland has been updated! Please ensure that your Autostart and Background Battery permissions haven\'t been silently revoked by the system to keep your widgets running smoothly.</string>
     <string name="got_it">Got it</string>
     <string name="recommended">Recommended</string>
     <string name="all">All</string>
@@ -534,7 +534,7 @@
     <string name="dismiss_with_original_desc">Island will disappear when you clear the original notification.</string>
     <string name="enable_inline_reply">Enable inline reply</string>
     <string name="enable_inline_reply_desc">Launch the custom inline reply overlay when replying from the island.</string>
-    <string name="remove_original_notification_hidden_warning">Note: When enabled, Hyper Bridge cannot respond or mark messages as read. Reply and Mark as Read actions will be hidden.</string>
+    <string name="remove_original_notification_hidden_warning">Note: When enabled, Hyper Island cannot respond or mark messages as read. Reply and Mark as Read actions will be hidden.</string>
     <string name="color_mode">Color Mode</string>
     <string name="color_mode_select">Select Color Mode</string>
     <string name="color_mode_change_cd">Change color mode</string>
@@ -617,15 +617,15 @@
     <string name="widget_went_wrong">If you are seeing this, something went wrong! The system couldn\'t show the widget</string>
     <string name="troubleshoot_featured_notification">Troubleshoot</string>
     <string name="featured_notifications_check">Featured Notifications Check</string>
-    <string name="featured_notifications_check_desc">Let\'s verify if your system is configured correctly to display HyperBridge islands.</string>
+    <string name="featured_notifications_check_desc">Let\'s verify if your system is configured correctly to display HyperIsland islands.</string>
     <string name="featured_notifications_not_supported">Not Supported</string>
     <string name="featured_notifications_enabled">Enabled</string>
     <string name="featured_notifications_open_settings">Open System Settings</string>
     <string name="featured_notifications_troubleshoot_title">Why is this not an island?</string>
-    <string name="featured_notifications_troubleshoot_desc">Your Xiaomi device intercepted the notification but failed to display it as a featured island because the permission is disabled in your system settings.\n\nTo fix this:\n1. Tap \"Open System Settings\"\n2. Scroll down to \"Featured Notifications\" (or similar)\n3. Enable it for HyperBridge.</string>
+    <string name="featured_notifications_troubleshoot_desc">Your Xiaomi device intercepted the notification but failed to display it as a featured island because the permission is disabled in your system settings.\n\nTo fix this:\n1. Tap \"Open System Settings\"\n2. Scroll down to \"Featured Notifications\" (or similar)\n3. Enable it for HyperIsland.</string>
     <string name="featured_notifications_shizuku_alternative">Alternative: Shizuku Override</string>
-    <string name="featured_notifications_shizuku_desc">If your system doesn\'t show the setting or it\'s restricted, you can bypass the Xiaomi whitelist entirely by setting up Shizuku. HyperBridge will use Shizuku to post islands directly.</string>
-    <string name="migration_title">HyperBridge Update</string>
+    <string name="featured_notifications_shizuku_desc">If your system doesn\'t show the setting or it\'s restricted, you can bypass the Xiaomi whitelist entirely by setting up Shizuku. HyperIsland will use Shizuku to post islands directly.</string>
+    <string name="migration_title">HyperIsland Update</string>
     <string name="migration_message">Migrating database to Device Protected storage…</string>
     <string name="migration_complete">Update Complete</string>
     <string name="notification_management">Notification Management</string>

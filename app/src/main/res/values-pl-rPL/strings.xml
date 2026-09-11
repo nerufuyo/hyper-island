@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hyper Bridge</string>
+    <string name="app_name">Hyper Island</string>
     <string name="back">Wstecz</string>
     <string name="next">Dalej</string>
     <string name="finish">Ukończ</string>
@@ -10,11 +10,11 @@
     <string name="configure">Skonfiguruj</string>
     <string name="clear">Wyczyść</string>
     <string name="sort_order">Kolejność sortowania</string>
-    <string name="welcome_title">Witamy w\nHyper Bridge</string>
+    <string name="welcome_title">Witamy w\nHyper Island</string>
     <string name="welcome_subtitle">Bezproblemowo integruj wyspę HyperIsland z HyperOS.</string>
     <string name="get_started">Rozpocznij</string>
     <string name="how_it_works">Jak to działa?</string>
-    <string name="how_it_works_desc">Wybierz swoje ulubione aplikacje (np. Spotify, Mapy czy Timer), a Hyper Bridge przekształci ich powiadomienia w elegancką wyspę HyperIsland.</string>
+    <string name="how_it_works_desc">Wybierz swoje ulubione aplikacje (np. Spotify, Mapy czy Timer), a Hyper Island przekształci ich powiadomienia w elegancką wyspę HyperIsland.</string>
     <string name="beta_warning">Uwaga: aplikacja jest w fazie Beta. Możesz napotkać błędy lub nieprawidłowe informacje wizualne.</string>
     <string name="device_compatible">Urządzenie kompatybilne</string>
     <string name="unsupported_device">Nieobsługiwane urządzenie</string>
@@ -36,7 +36,7 @@
     <string name="no_active_bridges_desc">Aby włączyć wyspy dla aplikacji, przejdź do Biblioteki.</string>
     <string name="no_apps_found">Nie znaleziono aplikacji</string>
     <string name="version_template">Wersja %s</string>
-    <string name="developer_credit">autor: D4vidDf</string>
+    <string name="developer_credit">autor: nerufuyo</string>
     <string name="group_configuration">Konfiguracja</string>
     <string name="system_setup">Ustawienia systemu</string>
     <string name="system_setup_subtitle">Sprawdź poprawność uprawnień</string>
@@ -47,7 +47,7 @@
     <string name="permanent_island_width">Island Width</string>
     <string name="group_about">O aplikacji</string>
     <string name="developer">Autor</string>
-    <string name="developer_subtitle">Odwiedź d4viddf.com</string>
+    <string name="developer_subtitle">Odwiedź github.com/nerufuyo</string>
     <string name="source_code">Kod źródłowy</string>
     <string name="source_code_subtitle">Repozytorium GitHub</string>
     <string name="licenses">Licencje open source</string>
@@ -136,7 +136,7 @@
         • &lt;b&gt;Tłumaczenie:&lt;/b&gt; Dodano wsparcie dla języka hiszpańskiego.
     </string>
     <string name="priority_edu_title">Nowość: Kontrola wysp</string>
-    <string name="priority_edu_desc">HyperBridge może teraz zarządzać zachowaniem powiadomień, gdy osiągnięty zostanie limit 9 wysp.\n\n&lt;b&gt;Domyślnie: Najnowsze&lt;/b&gt;\nNowe powiadomienia automatycznie zastępują najstarsze.</string>
+    <string name="priority_edu_desc">HyperIsland może teraz zarządzać zachowaniem powiadomień, gdy osiągnięty zostanie limit 9 wysp.\n\n&lt;b&gt;Domyślnie: Najnowsze&lt;/b&gt;\nNowe powiadomienia automatycznie zastępują najstarsze.</string>
     <string name="badge_new">NOWA</string>
     <string name="nav_layout_title">Układ wyspy nawigacji</string>
     <string name="nav_layout_desc">Wybierz informację, która pojawi się w danej części wyspy</string>
@@ -230,7 +230,7 @@
         • Ulepszono ekran sprawdzania kompatybilności z szczegółowymi informacjami o urządzeniu.
     </string>
     <string name="privacy_title">W 100% offline i bezpieczne</string>
-    <string name="privacy_desc">Hyper Bridge przetwarza dane bezpośrednio na Twoim telefonie.\n\nAplikacja NIE wymaga dostępu do Internetu, co oznacza, że Twoje powiadomienia i dane osobiste nigdy nie opuszczają urządzenia.</string>
+    <string name="privacy_desc">Hyper Island przetwarza dane bezpośrednio na Twoim telefonie.\n\nAplikacja NIE wymaga dostępu do Internetu, co oznacza, że Twoje powiadomienia i dane osobiste nigdy nie opuszczają urządzenia.</string>
     <string name="language">Język</string>
     <string name="language_desc">Zmień język aplikacji</string>
     <string name="system_default">Domyślny (systemowy)</string>
@@ -336,7 +336,7 @@
     <string name="theme_installer_success_title">Motyw gotowy</string>
     <string name="theme_installer_author">Autor: %s</string>
     <string name="theme_installer_version">Wersja %d</string>
-    <string name="theme_installer_apply_question">Czy chcesz teraz zastosować ten motyw w HyperBridge?</string>
+    <string name="theme_installer_apply_question">Czy chcesz teraz zastosować ten motyw w HyperIsland?</string>
     <string name="theme_installer_action_apply">Zastosuj motyw</string>
     <string name="theme_installer_action_later">Zapisz na później</string>
     <string name="theme_installer_error_title">Import nie powiódł się</string>
@@ -495,7 +495,7 @@
     <string name="colors_desc_material_you">Extracts colors from your current wallpaper.</string>
     <string name="kill_all_widgets">Kill Active Widgets</string>
     <string name="permission_reminder_title">Update Notice</string>
-    <string name="permission_reminder_desc">HyperBridge has been updated! Please ensure that your Autostart and Background Battery permissions haven\'t been silently revoked by the system to keep your widgets running smoothly.</string>
+    <string name="permission_reminder_desc">HyperIsland has been updated! Please ensure that your Autostart and Background Battery permissions haven\'t been silently revoked by the system to keep your widgets running smoothly.</string>
     <string name="got_it">Got it</string>
     <string name="recommended">Recommended</string>
     <string name="all">All</string>
@@ -551,7 +551,7 @@
     <string name="dismiss_with_original_desc">Island will disappear when you clear the original notification.</string>
     <string name="enable_inline_reply">Enable inline reply</string>
     <string name="enable_inline_reply_desc">Launch the custom inline reply overlay when replying from the island.</string>
-    <string name="remove_original_notification_hidden_warning">Note: When enabled, Hyper Bridge cannot respond or mark messages as read. Reply and Mark as Read actions will be hidden.</string>
+    <string name="remove_original_notification_hidden_warning">Note: When enabled, Hyper Island cannot respond or mark messages as read. Reply and Mark as Read actions will be hidden.</string>
     <string name="color_mode">Color Mode</string>
     <string name="color_mode_select">Select Color Mode</string>
     <string name="color_mode_change_cd">Change color mode</string>
@@ -634,15 +634,15 @@
     <string name="widget_went_wrong">If you are seeing this, something went wrong! The system couldn\'t show the widget</string>
     <string name="troubleshoot_featured_notification">Troubleshoot</string>
     <string name="featured_notifications_check">Featured Notifications Check</string>
-    <string name="featured_notifications_check_desc">Let\'s verify if your system is configured correctly to display HyperBridge islands.</string>
+    <string name="featured_notifications_check_desc">Let\'s verify if your system is configured correctly to display HyperIsland islands.</string>
     <string name="featured_notifications_not_supported">Not Supported</string>
     <string name="featured_notifications_enabled">Enabled</string>
     <string name="featured_notifications_open_settings">Open System Settings</string>
     <string name="featured_notifications_troubleshoot_title">Why is this not an island?</string>
-    <string name="featured_notifications_troubleshoot_desc">Your Xiaomi device intercepted the notification but failed to display it as a featured island because the permission is disabled in your system settings.\n\nTo fix this:\n1. Tap \"Open System Settings\"\n2. Scroll down to \"Featured Notifications\" (or similar)\n3. Enable it for HyperBridge.</string>
+    <string name="featured_notifications_troubleshoot_desc">Your Xiaomi device intercepted the notification but failed to display it as a featured island because the permission is disabled in your system settings.\n\nTo fix this:\n1. Tap \"Open System Settings\"\n2. Scroll down to \"Featured Notifications\" (or similar)\n3. Enable it for HyperIsland.</string>
     <string name="featured_notifications_shizuku_alternative">Alternative: Shizuku Override</string>
-    <string name="featured_notifications_shizuku_desc">If your system doesn\'t show the setting or it\'s restricted, you can bypass the Xiaomi whitelist entirely by setting up Shizuku. HyperBridge will use Shizuku to post islands directly.</string>
-    <string name="migration_title">HyperBridge Update</string>
+    <string name="featured_notifications_shizuku_desc">If your system doesn\'t show the setting or it\'s restricted, you can bypass the Xiaomi whitelist entirely by setting up Shizuku. HyperIsland will use Shizuku to post islands directly.</string>
+    <string name="migration_title">HyperIsland Update</string>
     <string name="migration_message">Migrating database to Device Protected storage…</string>
     <string name="migration_complete">Update Complete</string>
     <string name="notification_management">Notification Management</string>

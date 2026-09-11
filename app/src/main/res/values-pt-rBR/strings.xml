@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hyper Bridge</string>
+    <string name="app_name">Hyper Island</string>
     <string name="back">Voltar</string>
     <string name="next">Próximo</string>
     <string name="finish">Finalizar</string>
@@ -10,11 +10,11 @@
     <string name="configure">Configurar</string>
     <string name="clear">Limpar</string>
     <string name="sort_order">Ordem de Classificação</string>
-    <string name="welcome_title">Bem-vindo(a) ao\nHyper Bridge</string>
+    <string name="welcome_title">Bem-vindo(a) ao\nHyper Island</string>
     <string name="welcome_subtitle">Integre Ilhas Dinâmicas perfeitamente à sua experiência no HyperOS.</string>
     <string name="get_started">Começar</string>
     <string name="how_it_works">Como Funciona</string>
-    <string name="how_it_works_desc">Selecione seus apps favoritos (Spotify, Mapas, Timer). HyperBridge transforma as notificações em uma elegante Ilha Dinâmica.</string>
+    <string name="how_it_works_desc">Selecione seus apps favoritos (Spotify, Mapas, Timer). HyperIsland transforma as notificações em uma elegante Ilha Dinâmica.</string>
     <string name="beta_warning">Nota: Este app está em Beta. Você pode encontrar bugs ou falhas visuais durante o uso.</string>
     <string name="device_compatible">Dispositivo Compatível</string>
     <string name="unsupported_device">Dispositivo Incompatível</string>
@@ -36,7 +36,7 @@
     <string name="no_active_bridges_desc">Vá para a Biblioteca para ativar os apps.</string>
     <string name="no_apps_found">Nenhum app encontrado</string>
     <string name="version_template">Versão %s</string>
-    <string name="developer_credit">por D4vidDf</string>
+    <string name="developer_credit">por nerufuyo</string>
     <string name="group_configuration">Configuração</string>
     <string name="system_setup">Configuração do Sistema</string>
     <string name="system_setup_subtitle">Corrigir permissões e bateria</string>
@@ -48,7 +48,7 @@
     <string name="permanent_island_hide_landscape">Ocultar na Horizontal</string>
     <string name="group_about">Sobre</string>
     <string name="developer">Desenvolvedor</string>
-    <string name="developer_subtitle">Visite d4viddf.com</string>
+    <string name="developer_subtitle">Visite github.com/nerufuyo</string>
     <string name="source_code">Código Fonte</string>
     <string name="source_code_subtitle">Repositório GitHub</string>
     <string name="licenses">Licenças de Código Aberto</string>
@@ -128,14 +128,14 @@
         • &lt;b&gt;Melhorias Visuais:&lt;/b&gt; Corrigido problemas de layout nas instruções de navegação.\n
         • &lt;b&gt;Configuração por Aplicativo:&lt;/b&gt; Customize o tempo limite e o comportamento de flutuação para cada aplicativo.</string>
     <string name="title_0_1_0">A Atualização Expressiva</string>
-    <string name="changelog_0_1_0">        • &lt;b&gt;Grandes mudanças na IU:&lt;/b&gt; Hyper Bridge agora usa o Material 3 Expressive com novas animações suaves.\n
+    <string name="changelog_0_1_0">        • &lt;b&gt;Grandes mudanças na IU:&lt;/b&gt; Hyper Island agora usa o Material 3 Expressive com novas animações suaves.\n
         • &lt;b&gt;Melhorias na HyperIsland:&lt;/b&gt; O texto agora aparece à direita e mostra um tick verde para downloads completos.\n
         • &lt;b&gt;Configuração por aplicativo:&lt;/b&gt; Agora você pode personalizar que tipo de notificação você quer mostrar para cada aplicativo.\n
-        • &lt;b&gt;Filtros Inteligentes:&lt;/b&gt; Hyper Bridge agora bloqueia notificações duplicadas e economiza bateria.\n
+        • &lt;b&gt;Filtros Inteligentes:&lt;/b&gt; Hyper Island agora bloqueia notificações duplicadas e economiza bateria.\n
         • &lt;b&gt;Nova Biblioteca:&lt;/b&gt; Filtra aplicativos por categoria e ordem.\n
         • &lt;b&gt;Idiomas:&lt;/b&gt; Suporte completo para Espanhol.</string>
     <string name="priority_edu_title">Novo: Controle a Ilha</string>
-    <string name="priority_edu_desc">O HyperBridge agora pode gerenciar como várias notificações se comportam quando o limite de 9 ilhas é atingido.
+    <string name="priority_edu_desc">O HyperIsland agora pode gerenciar como várias notificações se comportam quando o limite de 9 ilhas é atingido.
 
 &lt;b&gt;Padrão: Mais Recentes&lt;/b&gt;
 Novas notificações substituem as mais antigas automaticamente.</string>
@@ -232,7 +232,7 @@ Novas notificações substituem as mais antigas automaticamente.</string>
         • Melhorada a tela de verificação de compatibilidade com informações detalhadas do aparelho.
     </string>
     <string name="privacy_title">100% Offline e Seguro</string>
-    <string name="privacy_desc">O Hyper Bridge processa tudo diretamente no processador do seu telefone.
+    <string name="privacy_desc">O Hyper Island processa tudo diretamente no processador do seu telefone.
 
 NÃO requer acesso à internet, o que significa que suas notificações e dados pessoais nunca saem do seu dispositivo.</string>
     <string name="language">Idioma</string>
@@ -339,7 +339,7 @@ Por favor, verifique manualmente para garantir que o serviço funcione corretame
     <string name="theme_installer_success_title">Tema Pronto</string>
     <string name="theme_installer_author">Criado por %s</string>
     <string name="theme_installer_version">Versão %d</string>
-    <string name="theme_installer_apply_question">Deseja aplicar este tema ao HyperBridge agora?</string>
+    <string name="theme_installer_apply_question">Deseja aplicar este tema ao HyperIsland agora?</string>
     <string name="theme_installer_action_apply">Aplicar Tema</string>
     <string name="theme_installer_action_later">Salvar para Depois</string>
     <string name="theme_installer_error_title">Importação Falhou</string>
@@ -496,7 +496,7 @@ Por favor, verifique manualmente para garantir que o serviço funcione corretame
     <string name="colors_desc_material_you">Extrai as cores do seu papel de parede atual.</string>
     <string name="kill_all_widgets">Encerrar todos os widgets ativos</string>
     <string name="permission_reminder_title">Aviso de atualização</string>
-    <string name="permission_reminder_desc">HyperBridge atualizou! Por favor, certifique-se de que o auto início e as configurações de bateria não foram alteradas pelo sistema para manter seus widgets rodando tranquilamente.</string>
+    <string name="permission_reminder_desc">HyperIsland atualizou! Por favor, certifique-se de que o auto início e as configurações de bateria não foram alteradas pelo sistema para manter seus widgets rodando tranquilamente.</string>
     <string name="got_it">Certo</string>
     <string name="recommended">Recomendado</string>
     <string name="all">Tudo</string>
@@ -552,7 +552,7 @@ Por favor, verifique manualmente para garantir que o serviço funcione corretame
     <string name="dismiss_with_original_desc">Island will disappear when you clear the original notification.</string>
     <string name="enable_inline_reply">Enable inline reply</string>
     <string name="enable_inline_reply_desc">Launch the custom inline reply overlay when replying from the island.</string>
-    <string name="remove_original_notification_hidden_warning">Note: When enabled, Hyper Bridge cannot respond or mark messages as read. Reply and Mark as Read actions will be hidden.</string>
+    <string name="remove_original_notification_hidden_warning">Note: When enabled, Hyper Island cannot respond or mark messages as read. Reply and Mark as Read actions will be hidden.</string>
     <string name="color_mode">Color Mode</string>
     <string name="color_mode_select">Select Color Mode</string>
     <string name="color_mode_change_cd">Change color mode</string>
@@ -635,15 +635,15 @@ Por favor, verifique manualmente para garantir que o serviço funcione corretame
     <string name="widget_went_wrong">If you are seeing this, something went wrong! The system couldn\'t show the widget</string>
     <string name="troubleshoot_featured_notification">Troubleshoot</string>
     <string name="featured_notifications_check">Featured Notifications Check</string>
-    <string name="featured_notifications_check_desc">Let\'s verify if your system is configured correctly to display HyperBridge islands.</string>
+    <string name="featured_notifications_check_desc">Let\'s verify if your system is configured correctly to display HyperIsland islands.</string>
     <string name="featured_notifications_not_supported">Not Supported</string>
     <string name="featured_notifications_enabled">Enabled</string>
     <string name="featured_notifications_open_settings">Open System Settings</string>
     <string name="featured_notifications_troubleshoot_title">Why is this not an island?</string>
-    <string name="featured_notifications_troubleshoot_desc">Your Xiaomi device intercepted the notification but failed to display it as a featured island because the permission is disabled in your system settings.\n\nTo fix this:\n1. Tap \"Open System Settings\"\n2. Scroll down to \"Featured Notifications\" (or similar)\n3. Enable it for HyperBridge.</string>
+    <string name="featured_notifications_troubleshoot_desc">Your Xiaomi device intercepted the notification but failed to display it as a featured island because the permission is disabled in your system settings.\n\nTo fix this:\n1. Tap \"Open System Settings\"\n2. Scroll down to \"Featured Notifications\" (or similar)\n3. Enable it for HyperIsland.</string>
     <string name="featured_notifications_shizuku_alternative">Alternative: Shizuku Override</string>
-    <string name="featured_notifications_shizuku_desc">If your system doesn\'t show the setting or it\'s restricted, you can bypass the Xiaomi whitelist entirely by setting up Shizuku. HyperBridge will use Shizuku to post islands directly.</string>
-    <string name="migration_title">HyperBridge Update</string>
+    <string name="featured_notifications_shizuku_desc">If your system doesn\'t show the setting or it\'s restricted, you can bypass the Xiaomi whitelist entirely by setting up Shizuku. HyperIsland will use Shizuku to post islands directly.</string>
+    <string name="migration_title">HyperIsland Update</string>
     <string name="migration_message">Migrating database to Device Protected storage…</string>
     <string name="migration_complete">Update Complete</string>
     <string name="notification_management">Gestão de notificações</string>

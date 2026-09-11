@@ -1,0 +1,14 @@
+Hyper Island
+Copyright (c) contributors to nerufuyo/hyper-island
+
+This project is a fork/derivative of HyperBridge
+(https://github.com/D4vidDf/HyperBridge), copyright D4vidDf,
+licensed under the Apache License, Version 2.0.
+
+The original project's notification-bridging engine, theme system,
+translator architecture, and community-contributed translations were
+carried into this fork as a starting point and have since been (or will
+be) modified. See the project's git history for the point of divergence.
+
+This product includes software developed by D4vidDf and the HyperBridge
+project contributors.

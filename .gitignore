@@ -56,7 +56,7 @@ captures/
 *compose_metrics.txt
 *compose_reports.txt
 
-# Custom HyperBridge project additions
+# Custom HyperIsland project additions
 caps_build.txt
 gradle/gradle-daemon-jvm.properties
 .idea/deploymentTargetSelector.xml

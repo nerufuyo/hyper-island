@@ -36,9 +36,9 @@
 
 # --- Shizuku & AIDL IPC ---
 # Keep all generated classes from AIDL files
--keep interface com.d4viddf.hyperbridge.** { *; }
--keep class com.d4viddf.hyperbridge.**$Stub { *; }
--keep class com.d4viddf.hyperbridge.**$Proxy { *; }
+-keep interface com.nerufuyo.hyperisland.** { *; }
+-keep class com.nerufuyo.hyperisland.**$Stub { *; }
+-keep class com.nerufuyo.hyperisland.**$Proxy { *; }
 
 # Ensure our privileged service implementation is not stripped or renamed
--keep class com.d4viddf.hyperbridge.integration.shizuku.PrivilegedServiceImpl { *; }
+-keep class com.nerufuyo.hyperisland.integration.shizuku.PrivilegedServiceImpl { *; }

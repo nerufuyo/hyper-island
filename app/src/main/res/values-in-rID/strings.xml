@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hyper Bridge</string>
+    <string name="app_name">Hyper Island</string>
     <string name="back">Kembali</string>
     <string name="next">Lanjut</string>
     <string name="finish">Selesai</string>
@@ -10,11 +10,11 @@
     <string name="configure">Atur</string>
     <string name="clear">Bersihkan</string>
     <string name="sort_order">Urutan Penyortiran</string>
-    <string name="welcome_title">Selamat Datang di\nHyper Bridge</string>
+    <string name="welcome_title">Selamat Datang di\nHyper Island</string>
     <string name="welcome_subtitle">Integrasikan HyperIslands secara mulus ke dalam pengalaman HyperOS Anda.</string>
     <string name="get_started">Mulai</string>
     <string name="how_it_works">Cara Kerjanya</string>
-    <string name="how_it_works_desc">Pilih aplikasi favorit Anda (Spotify, Peta, Pewaktu). HyperBridge mengubah pemberitahuan aplikasi tersebut menjadi HyperIsland yang elegan.</string>
+    <string name="how_it_works_desc">Pilih aplikasi favorit Anda (Spotify, Peta, Pewaktu). HyperIsland mengubah pemberitahuan aplikasi tersebut menjadi HyperIsland yang elegan.</string>
     <string name="beta_warning">Catatan: Aplikasi ini masih dalam tahap Beta. Anda mungkin menemui kesalahan atau informasi visual yang tidak akurat.</string>
     <string name="device_compatible">Perangkat Kompatibel</string>
     <string name="unsupported_device">Perangkat Tidak Didukung</string>
@@ -36,7 +36,7 @@
     <string name="no_active_bridges_desc">Buka Pustaka untuk mengaktifkan aplikasi.</string>
     <string name="no_apps_found">Aplikasi tidak ditemukan</string>
     <string name="version_template">Versi %s</string>
-    <string name="developer_credit">oleh D4vidDf</string>
+    <string name="developer_credit">oleh nerufuyo</string>
     <string name="group_configuration">Konfigurasi</string>
     <string name="system_setup">Pengaturan Sistem</string>
     <string name="system_setup_subtitle">Perbaiki perizinan &amp; baterai</string>
@@ -47,7 +47,7 @@
     <string name="permanent_island_width">Lebar Island</string>
     <string name="group_about">Tentang</string>
     <string name="developer">Pengembang</string>
-    <string name="developer_subtitle">Kunjungi d4viddf.com</string>
+    <string name="developer_subtitle">Kunjungi github.com/nerufuyo</string>
     <string name="source_code">Kode Sumber</string>
     <string name="source_code_subtitle">Repository GitHub</string>
     <string name="licenses">Lisensi Open Source</string>
@@ -227,7 +227,7 @@
         • Mendesain ulang lembar Konfigurasi Aplikasi untuk penggunaan yang lebih baik.\n
         • Meningkatkan layar Cek Kompatibilitas dengan info perangkat yang detail.</string>
     <string name="privacy_title">100% Offline &amp; Aman</string>
-    <string name="privacy_desc">Hyper Bridge memproses semuanya langsung di prosesor ponsel Anda.\n\nIni TIDAK memerlukan akses internet, artinya notifikasi dan data pribadi Anda tidak pernah meninggalkan perangkat Anda.</string>
+    <string name="privacy_desc">Hyper Island memproses semuanya langsung di prosesor ponsel Anda.\n\nIni TIDAK memerlukan akses internet, artinya notifikasi dan data pribadi Anda tidak pernah meninggalkan perangkat Anda.</string>
     <string name="language">Bahasa</string>
     <string name="language_desc">Ubah bahasa aplikasi</string>
     <string name="system_default">Default Sistem</string>
@@ -323,7 +323,7 @@
     <string name="theme_installer_success_title">Tema Siap</string>
     <string name="theme_installer_author">Dibuat oleh %s</string>
     <string name="theme_installer_version">Versi %d</string>
-    <string name="theme_installer_apply_question">Apakah Anda ingin menerapkan tema ini ke HyperBridge sekarang?</string>
+    <string name="theme_installer_apply_question">Apakah Anda ingin menerapkan tema ini ke HyperIsland sekarang?</string>
     <string name="theme_installer_action_apply">Terapkan Tema</string>
     <string name="theme_installer_action_later">Simpan untuk Nanti</string>
     <string name="theme_installer_error_title">Impor Gagal</string>
@@ -478,7 +478,7 @@ Penulisan ulang total logika inti untuk stabilitas yang lebih baik.\n
     <string name="colors_desc_material_you">Mengekstrak warna dari wallpaper Anda saat ini.</string>
     <string name="kill_all_widgets">Matikan Widget yang Aktif</string>
     <string name="permission_reminder_title">Informasi Pembaruan</string>
-    <string name="permission_reminder_desc">HyperBridge telah diperbarui! Pastikan izin Mulai Otomatis dan Penggunaan Baterai di Latar Belakang Anda tidak dicabut secara diam-diam oleh sistem agar widget Anda tetap berjalan dengan lancar.</string>
+    <string name="permission_reminder_desc">HyperIsland telah diperbarui! Pastikan izin Mulai Otomatis dan Penggunaan Baterai di Latar Belakang Anda tidak dicabut secara diam-diam oleh sistem agar widget Anda tetap berjalan dengan lancar.</string>
     <string name="got_it">Mengerti</string>
     <string name="recommended">Direkomendasikan</string>
     <string name="all">Semua</string>
@@ -534,7 +534,7 @@ Penulisan ulang total logika inti untuk stabilitas yang lebih baik.\n
     <string name="dismiss_with_original_desc">Island akan menghilang setelah Anda menghapus notifikasi aslinya.</string>
     <string name="enable_inline_reply">Aktifkan balasan langsung</string>
     <string name="enable_inline_reply_desc">Tampilkan jendela balasan langsung khusus saat membalas dari island.</string>
-    <string name="remove_original_notification_hidden_warning">Catatan: Jika diaktifkan, Hyper Bridge tidak dapat membalas atau menandai pesan sebagai sudah dibaca. Tindakan Balas dan Tandai Sudah Dibaca akan disembunyikan.</string>
+    <string name="remove_original_notification_hidden_warning">Catatan: Jika diaktifkan, Hyper Island tidak dapat membalas atau menandai pesan sebagai sudah dibaca. Tindakan Balas dan Tandai Sudah Dibaca akan disembunyikan.</string>
     <string name="color_mode">Mode Warna</string>
     <string name="color_mode_select">Pilih Mode Warna</string>
     <string name="color_mode_change_cd">Ubah mode warna</string>
@@ -617,15 +617,15 @@ Penulisan ulang total logika inti untuk stabilitas yang lebih baik.\n
     <string name="widget_went_wrong">Jika Anda melihat pesan ini, berarti terjadi kesalahan! Sistem tidak dapat menampilkan widget</string>
     <string name="troubleshoot_featured_notification">Pemecahan Masalah</string>
     <string name="featured_notifications_check">Pemeriksaan Pemberitahuan Unggulan</string>
-    <string name="featured_notifications_check_desc">Mari kita periksa apakah sistem Anda sudah dikonfigurasi dengan benar untuk menampilkan HyperBridge islands.</string>
+    <string name="featured_notifications_check_desc">Mari kita periksa apakah sistem Anda sudah dikonfigurasi dengan benar untuk menampilkan HyperIsland islands.</string>
     <string name="featured_notifications_not_supported">Tidak Didukung</string>
     <string name="featured_notifications_enabled">Diaktifkan</string>
     <string name="featured_notifications_open_settings">Buka Pengatran Sistem</string>
     <string name="featured_notifications_troubleshoot_title">Mengapa ini bukan island?</string>
-    <string name="featured_notifications_troubleshoot_desc">Perangkat Xiaomi Anda telah mencegat pemberitahuan tersebut, tetapi gagal menampilkannya sebagai island unggulan karena izinnya dinonaktifkan di pengaturan sistem Anda.\n\nUntuk memperbaikinya:\n1. Ketuk \"Buka Pengaturan Sistem\"\n2. Gulir ke bawah ke \"Pemberitahuan Unggulan\" (atau yang serupa)\n3. Aktifkan untuk HyperBridge.</string>
+    <string name="featured_notifications_troubleshoot_desc">Perangkat Xiaomi Anda telah mencegat pemberitahuan tersebut, tetapi gagal menampilkannya sebagai island unggulan karena izinnya dinonaktifkan di pengaturan sistem Anda.\n\nUntuk memperbaikinya:\n1. Ketuk \"Buka Pengaturan Sistem\"\n2. Gulir ke bawah ke \"Pemberitahuan Unggulan\" (atau yang serupa)\n3. Aktifkan untuk HyperIsland.</string>
     <string name="featured_notifications_shizuku_alternative">Alternatif: Penggantian Shizuku</string>
-    <string name="featured_notifications_shizuku_desc">Jika sistem Anda tidak menampilkan pengaturan tersebut atau pengaturan tersebut dibatasi, Anda dapat melewati daftar putih Xiaomi sepenuhnya dengan mengatur Shizuku. HyperBridge akan menggunakan Shizuku untuk mengirimkan islands secara langsung.</string>
-    <string name="migration_title">HyperBridge Update</string>
+    <string name="featured_notifications_shizuku_desc">Jika sistem Anda tidak menampilkan pengaturan tersebut atau pengaturan tersebut dibatasi, Anda dapat melewati daftar putih Xiaomi sepenuhnya dengan mengatur Shizuku. HyperIsland akan menggunakan Shizuku untuk mengirimkan islands secara langsung.</string>
+    <string name="migration_title">HyperIsland Update</string>
     <string name="migration_message">Migrating database to Device Protected storage…</string>
     <string name="migration_complete">Update Complete</string>
     <string name="notification_management">Pengelolaan Pemberitahuan</string>

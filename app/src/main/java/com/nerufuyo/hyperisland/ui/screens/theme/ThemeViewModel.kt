@@ -29,6 +29,7 @@ import com.nerufuyo.hyperisland.models.theme.ResourceType
 import com.nerufuyo.hyperisland.models.theme.ThemeMetadata
 import com.nerufuyo.hyperisland.models.theme.ThemeResource
 import com.nerufuyo.hyperisland.service.NotificationReaderService
+import com.nerufuyo.hyperisland.service.ThemeSwitcherWidgetProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -568,6 +569,8 @@ class ThemeViewModel(application: Application) : AndroidViewModel(application) {
             action = NotificationReaderService.ACTION_RELOAD_THEME
         }
         context.startService(intent)
+        // Keep the home-screen theme-switcher widget (if pinned) in sync too.
+        ThemeSwitcherWidgetProvider.requestUpdate(context)
     }
 
     val useNativeLiveUpdates = prefs.useNativeLiveUpdates

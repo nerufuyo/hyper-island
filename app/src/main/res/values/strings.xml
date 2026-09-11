@@ -630,6 +630,10 @@
     <string name="dnd_manual_toggle_desc">Manually pause all islands until you turn this back on</string>
     <string name="dnd_auto_detect">Auto-detect System DND</string>
     <string name="dnd_auto_detect_desc">Automatically pause islands when your phone is in Do Not Disturb mode</string>
+    <string name="dnd_schedule">Scheduled Quiet Hours</string>
+    <string name="dnd_schedule_desc">Automatically pause islands during a daily time window</string>
+    <string name="dnd_schedule_start">Start time</string>
+    <string name="dnd_schedule_end">End time</string>
     <string name="behaviour_triggers"><![CDATA[Behaviour & Triggers]]></string>
     <string name="engine_timeouts_triggers"><![CDATA[Engine, timeouts & triggers]]></string>
     <string name="global_behavior">Global Behavior</string>

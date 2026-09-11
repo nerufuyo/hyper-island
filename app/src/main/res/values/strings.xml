@@ -661,6 +661,9 @@
     <string name="profile_editor_save">Save</string>
     <string name="profile_editor_delete">Delete profile</string>
     <string name="profile_editor_usage_access_needed">App-based triggers need Usage Access</string>
+    <string name="profile_editor_priority_apps">Priority Apps</string>
+    <string name="profile_editor_priority_apps_none">None - nothing gets through while this profile is active</string>
+    <string name="profile_editor_priority_apps_count">%1$d app(s) still show islands</string>
     <string name="profile_widget_label">Mute Profile Toggle</string>
     <string name="profile_widget_description">Tap to turn one Mute Profile on or off</string>
     <string name="profile_widget_not_configured">Tap to set up</string>

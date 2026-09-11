@@ -21,7 +21,10 @@ data class MuteProfile(
     val triggerType: String = TRIGGER_MANUAL,
     val scheduleStartMinutes: Int = 22 * 60,
     val scheduleEndMinutes: Int = 7 * 60,
-    val triggerApps: String = "" // comma-joined package names, only used by TRIGGER_APP_FOREGROUND
+    val triggerApps: String = "", // comma-joined package names, only used by TRIGGER_APP_FOREGROUND
+    // iOS Focus's "Allowed Notifications": apps that still show islands even while this
+    // profile is actively muting. Comma-joined package names, empty = allows nothing through.
+    val priorityApps: String = ""
 ) {
     companion object {
         const val TRIGGER_MANUAL = "MANUAL"

@@ -76,16 +76,16 @@ class NotificationReaderService : NotificationListenerService() {
         }
 
         /**
-         * Pure "should islands be muted right now" check across all Mute Profiles, pulled out
-         * so it's testable without Context/Room. foregroundPackage may be null (Usage Access
-         * not granted, or nothing needed it) - APP_FOREGROUND profiles just never match then.
+         * Which enabled Mute Profiles currently have their trigger matching, pulled out so
+         * it's testable without Context/Room. foregroundPackage may be null (Usage Access not
+         * granted, or nothing needed it) - APP_FOREGROUND profiles just never match then.
          */
-        internal fun isAnyProfileActive(
+        internal fun activeProfiles(
             profiles: List<com.nerufuyo.hyperisland.data.db.MuteProfile>,
             nowMinutes: Int,
             foregroundPackage: String?
-        ): Boolean {
-            return profiles.filter { it.enabled }.any { profile ->
+        ): List<com.nerufuyo.hyperisland.data.db.MuteProfile> {
+            return profiles.filter { it.enabled }.filter { profile ->
                 when (profile.triggerType) {
                     com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_MANUAL -> true
                     com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_SCHEDULE ->
@@ -96,6 +96,22 @@ class NotificationReaderService : NotificationListenerService() {
                     }
                     else -> false
                 }
+            }
+        }
+
+        /**
+         * iOS Focus's "Allowed Notifications": a package is muted by the given active profiles
+         * unless EVERY one of them explicitly allows it (priorityApps) - if even one active
+         * profile doesn't allow it, it stays muted. With the common case of a single active
+         * profile this reduces to "does this profile allow this app".
+         */
+        internal fun isMutedByProfiles(
+            activeProfiles: List<com.nerufuyo.hyperisland.data.db.MuteProfile>,
+            packageName: String
+        ): Boolean {
+            if (activeProfiles.isEmpty()) return false
+            return !activeProfiles.all { profile ->
+                packageName in profile.priorityApps.split(",").filter { it.isNotEmpty() }
             }
         }
     }
@@ -713,12 +729,13 @@ class NotificationReaderService : NotificationListenerService() {
     }
 
     /**
-     * True when at least one enabled Mute Profile's trigger currently matches - the
-     * iOS-Focus-style generalization of what used to be separate schedule/focus-mode checks.
-     * Foreground-app lookup only happens if some enabled profile actually needs it (same lazy,
+     * True when this specific package is muted by a currently-active Mute Profile - the
+     * iOS-Focus-style generalization of what used to be separate schedule/focus-mode checks,
+     * plus its "Allowed Notifications" equivalent (MuteProfile.priorityApps). Foreground-app
+     * lookup only happens if some enabled profile actually needs it (same lazy,
      * checked-per-notification approach the old isFocusModeActive() used).
      */
-    private fun isAnyMuteProfileActive(): Boolean {
+    private fun isMutedByAnyProfile(packageName: String): Boolean {
         val enabled = muteProfiles.filter { it.enabled }
         if (enabled.isEmpty()) return false
 
@@ -726,14 +743,15 @@ class NotificationReaderService : NotificationListenerService() {
         val needsForeground = enabled.any { it.triggerType == com.nerufuyo.hyperisland.data.db.MuteProfile.TRIGGER_APP_FOREGROUND }
         val foregroundPackage = if (needsForeground) getForegroundPackageName(this) else null
 
-        return isAnyProfileActive(enabled, nowMinutes, foregroundPackage)
+        val active = activeProfiles(enabled, nowMinutes, foregroundPackage)
+        return isMutedByProfiles(active, packageName)
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private suspend fun processStandardNotification(rawSbn: StatusBarNotification) {
         val manager = getSystemService(NotificationManager::class.java)
         val isSystemDndActive = manager.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL
-        val dndActive = isDndModeEnabled || (autoDetectDnd && isSystemDndActive) || isAnyMuteProfileActive()
+        val dndActive = isDndModeEnabled || (autoDetectDnd && isSystemDndActive) || isMutedByAnyProfile(rawSbn.packageName)
 
         if (dndActive) {
             Log.d(TAG, "DND active. Skipping notification ${rawSbn.packageName}")

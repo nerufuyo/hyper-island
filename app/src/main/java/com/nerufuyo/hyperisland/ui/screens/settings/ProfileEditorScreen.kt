@@ -15,6 +15,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Bedtime
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.NotificationsPaused
+import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.SportsEsports
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
@@ -87,6 +88,8 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
     var scheduleStart by remember { mutableIntStateOf(22 * 60) }
     var scheduleEnd by remember { mutableIntStateOf(7 * 60) }
     var selectedApps by remember { mutableStateOf(emptySet<String>()) }
+    var selectedPriorityApps by remember { mutableStateOf(emptySet<String>()) }
+    var showPriorityPicker by remember { mutableStateOf(false) }
     var hasUsageAccess by remember { mutableStateOf(isUsageAccessGranted(context)) }
     val apps by appListViewModel.libraryAppsState.collectAsState()
 
@@ -99,6 +102,7 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                 scheduleStart = p.scheduleStartMinutes
                 scheduleEnd = p.scheduleEndMinutes
                 selectedApps = p.triggerApps.split(",").filter { it.isNotEmpty() }.toSet()
+                selectedPriorityApps = p.priorityApps.split(",").filter { it.isNotEmpty() }.toSet()
             }
         }
     }
@@ -114,7 +118,8 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                     triggerType = triggerType,
                     scheduleStartMinutes = scheduleStart,
                     scheduleEndMinutes = scheduleEnd,
-                    triggerApps = selectedApps.joinToString(",")
+                    triggerApps = selectedApps.joinToString(","),
+                    priorityApps = selectedPriorityApps.joinToString(",")
                 )
             )
             onBack()
@@ -234,6 +239,38 @@ fun ProfileEditorScreen(profileId: String?, onBack: () -> Unit) {
                         checked = selectedApps.contains(app.packageName),
                         onToggle = { checked ->
                             selectedApps = if (checked) selectedApps + app.packageName else selectedApps - app.packageName
+                        },
+                        onSettingsClick = {}
+                    )
+                }
+            }
+
+            item {
+                Spacer(Modifier.height(16.dp))
+                ListOptionCard(
+                    title = stringResource(R.string.profile_editor_priority_apps),
+                    subtitle = if (selectedPriorityApps.isEmpty()) {
+                        stringResource(R.string.profile_editor_priority_apps_none)
+                    } else {
+                        stringResource(R.string.profile_editor_priority_apps_count, selectedPriorityApps.size)
+                    },
+                    icon = Icons.Outlined.Shield,
+                    shape = RoundedCornerShape(16.dp),
+                    onClick = { showPriorityPicker = !showPriorityPicker }
+                )
+            }
+
+            if (showPriorityPicker) {
+                items(apps, key = { "priority_${it.packageName}" }) { app ->
+                    AppListItem(
+                        app = app,
+                        checked = selectedPriorityApps.contains(app.packageName),
+                        onToggle = { checked ->
+                            selectedPriorityApps = if (checked) {
+                                selectedPriorityApps + app.packageName
+                            } else {
+                                selectedPriorityApps - app.packageName
+                            }
                         },
                         onSettingsClick = {}
                     )

@@ -606,6 +606,9 @@ class NotificationReaderService : NotificationListenerService() {
                 .setTimeoutAfter(10_000L)
                 .build()
             NotificationManagerCompat.from(this).notify(relayId, notification)
+        } catch (e: SecurityException) {
+            // POST_NOTIFICATIONS not granted (Android 13+) - this relay is best-effort, skip it.
+            Log.e(TAG, "Missing POST_NOTIFICATIONS permission for watch relay notification", e)
         } catch (e: Exception) {
             Log.e(TAG, "Error posting watch relay notification", e)
         }

@@ -505,6 +505,19 @@ class AppPreferences(context: Context) {
         dao.getSettingFlow("dnd_schedule_end_minutes").map { it.toInt(DEFAULT_DND_SCHEDULE_END_MINUTES) }
     suspend fun setDndScheduleEndMinutes(minutes: Int) = save("dnd_schedule_end_minutes", minutes.toString())
 
+    // Focus Mode: mute islands while a chosen app (e.g. a game) is in the foreground.
+    // Needs Usage Access (SystemIntents.isUsageAccessGranted/openUsageAccessSettings) -
+    // if it's not granted, getForegroundPackageName() just returns null and this never fires.
+    val focusModeEnabledFlow: Flow<Boolean> = dao.getSettingFlow("focus_mode_enabled").map { it.toBoolean(false) }
+    suspend fun setFocusModeEnabled(isEnabled: Boolean) = save("focus_mode_enabled", isEnabled.toString())
+
+    val focusModeAppsFlow: Flow<Set<String>> = dao.getSettingFlow("focus_mode_apps").map { it.deserializeSet() }
+    suspend fun toggleFocusModeApp(packageName: String, isEnabled: Boolean) {
+        val current = focusModeAppsFlow.first()
+        val updated = if (isEnabled) current + packageName else current - packageName
+        save("focus_mode_apps", updated.serialize())
+    }
+
     // --- APP-SPECIFIC ENGINE OVERRIDES ---
 
     fun getAppEnginePreferenceFlow(packageName: String): Flow<Boolean?> {

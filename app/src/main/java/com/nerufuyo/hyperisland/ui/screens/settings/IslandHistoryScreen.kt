@@ -1,5 +1,7 @@
 package com.nerufuyo.hyperisland.ui.screens.settings
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -18,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material.icons.outlined.Inbox
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,6 +53,22 @@ import com.nerufuyo.hyperisland.util.toBitmap
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.util.Date
+
+private fun shareIslandHistoryEntry(context: Context, appLabel: String, entry: IslandHistoryEntry) {
+    val body = buildString {
+        append(appLabel)
+        if (entry.title.isNotBlank()) append(" - ").append(entry.title)
+        if (entry.text.isNotBlank()) append("\n").append(entry.text)
+    }
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, body)
+    }
+    val chooser = Intent.createChooser(intent, appLabel).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    context.startActivity(chooser)
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -152,6 +171,14 @@ private fun IslandHistoryRow(entry: IslandHistoryEntry) {
                 if (entry.text.isNotBlank()) {
                     Text(entry.text, style = MaterialTheme.typography.bodySmall, maxLines = 2)
                 }
+            }
+
+            IconButton(onClick = { shareIslandHistoryEntry(context, appLabel, entry) }) {
+                Icon(
+                    Icons.Outlined.Share,
+                    contentDescription = stringResource(R.string.island_history_share),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }

@@ -24,7 +24,8 @@ import com.nerufuyo.hyperisland.ui.AppInfo
 fun AppListItem(
     app: AppInfo,
     onToggle: (Boolean) -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    checked: Boolean = app.isBridged
 ) {
     Row(
         modifier = Modifier
@@ -113,7 +114,7 @@ fun AppListItem(
         }
 
         Switch(
-            checked = app.isBridged,
+            checked = checked,
             onCheckedChange = onToggle
         )
     }

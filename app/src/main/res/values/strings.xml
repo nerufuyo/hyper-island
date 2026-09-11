@@ -641,6 +641,15 @@
     <string name="island_history_desc">Review islands that were recently shown</string>
     <string name="island_history_clear">Clear history</string>
     <string name="island_history_empty">No islands shown yet</string>
+    <string name="island_history_share">Share</string>
+    <string name="focus_mode_title">Focus Mode</string>
+    <string name="focus_mode_desc">Automatically pause islands while a chosen app (like a game) is in the foreground</string>
+    <string name="focus_mode_grant_usage_access">Grant Usage Access</string>
+    <string name="focus_mode_grant_usage_access_desc">Required to detect which app is currently open</string>
+    <string name="grant">Grant</string>
+    <string name="focus_mode_toggle">Enable Focus Mode</string>
+    <string name="focus_mode_toggle_desc">Mute islands while a selected app is active</string>
+    <string name="focus_mode_pick_apps">Apps that trigger Focus Mode</string>
     <string name="behaviour_triggers"><![CDATA[Behaviour & Triggers]]></string>
     <string name="engine_timeouts_triggers"><![CDATA[Engine, timeouts & triggers]]></string>
     <string name="global_behavior">Global Behavior</string>

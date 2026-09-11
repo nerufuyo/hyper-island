@@ -16,6 +16,7 @@ import com.nerufuyo.hyperisland.ui.screens.settings.ChangelogHistoryScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.EngineSettingsScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.GlobalBlocklistScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.GlobalSettingsScreen
+import com.nerufuyo.hyperisland.ui.screens.settings.FocusModeScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.ImportPreviewScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.InfoScreen
 import com.nerufuyo.hyperisland.ui.screens.settings.IslandHistoryScreen
@@ -77,10 +78,16 @@ fun mainNavGraph(
         )
     }
     entry<Screen.DndSettings> {
-        com.nerufuyo.hyperisland.ui.screens.settings.DndSettingsScreen(onBack = { navigator.goBack() })
+        com.nerufuyo.hyperisland.ui.screens.settings.DndSettingsScreen(
+            onBack = { navigator.goBack() },
+            onFocusModeClick = { navigator.navigate(Screen.FocusMode) }
+        )
     }
     entry<Screen.IslandActivity> {
         IslandHistoryScreen(onBack = { navigator.goBack() })
+    }
+    entry<Screen.FocusMode> {
+        FocusModeScreen(onBack = { navigator.goBack() })
     }
     entry<Screen.PermanentIslandConfig> {
         com.nerufuyo.hyperisland.ui.screens.settings.PermanentIslandConfigScreen(onBack = { navigator.goBack() })

@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Bedtime
 import androidx.compose.material.icons.outlined.DoNotDisturbOn
 import androidx.compose.material.icons.outlined.NotificationsPaused
+import androidx.compose.material.icons.outlined.SportsEsports
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
@@ -54,7 +55,7 @@ private fun showTimePicker(context: android.content.Context, initialMinutes: Int
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DndSettingsScreen(onBack: () -> Unit) {
+fun DndSettingsScreen(onBack: () -> Unit, onFocusModeClick: () -> Unit) {
     val context = LocalContext.current
     val prefs = remember { AppPreferences(context) }
     val isDndModeEnabled by prefs.isDndModeEnabledFlow.collectAsState(initial = false)
@@ -131,7 +132,7 @@ fun DndSettingsScreen(onBack: () -> Unit) {
                 title = stringResource(R.string.dnd_schedule),
                 subtitle = stringResource(R.string.dnd_schedule_desc),
                 icon = Icons.Outlined.Bedtime,
-                shape = RoundedCornerShape(4.dp, 4.dp, if (dndScheduleEnabled) 4.dp else 24.dp, if (dndScheduleEnabled) 4.dp else 24.dp),
+                shape = RoundedCornerShape(4.dp),
                 onClick = {
                     scope.launch { prefs.setDndScheduleEnabled(!dndScheduleEnabled) }
                 },
@@ -161,7 +162,7 @@ fun DndSettingsScreen(onBack: () -> Unit) {
                         title = stringResource(R.string.dnd_schedule_end),
                         subtitle = formatMinutes(dndScheduleEnd),
                         icon = Icons.Outlined.Bedtime,
-                        shape = RoundedCornerShape(4.dp, 4.dp, 24.dp, 24.dp),
+                        shape = RoundedCornerShape(4.dp),
                         onClick = {
                             showTimePicker(context, dndScheduleEnd) { minutes ->
                                 scope.launch { prefs.setDndScheduleEndMinutes(minutes) }
@@ -170,6 +171,16 @@ fun DndSettingsScreen(onBack: () -> Unit) {
                     )
                 }
             }
+
+            Spacer(Modifier.height(2.dp))
+
+            ListOptionCard(
+                title = stringResource(R.string.focus_mode_title),
+                subtitle = stringResource(R.string.focus_mode_desc),
+                icon = Icons.Outlined.SportsEsports,
+                shape = RoundedCornerShape(4.dp, 4.dp, 24.dp, 24.dp),
+                onClick = onFocusModeClick
+            )
         }
     }
 }

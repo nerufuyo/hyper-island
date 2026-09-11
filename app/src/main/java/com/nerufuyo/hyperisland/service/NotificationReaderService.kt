@@ -42,6 +42,7 @@ import com.nerufuyo.hyperisland.service.translators.StandardTranslator
 import com.nerufuyo.hyperisland.service.translators.TimerTranslator
 import com.nerufuyo.hyperisland.service.translators.WidgetTranslator
 import com.nerufuyo.hyperisland.util.ShizukuManager
+import com.nerufuyo.hyperisland.util.getForegroundPackageName
 import io.github.d4viddf.hyperisland_kit.HyperIslandNotification
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -115,6 +116,8 @@ class NotificationReaderService : NotificationListenerService() {
     private var dndScheduleEnabled = false
     private var dndScheduleStartMinutes = AppPreferences.DEFAULT_DND_SCHEDULE_START_MINUTES
     private var dndScheduleEndMinutes = AppPreferences.DEFAULT_DND_SCHEDULE_END_MINUTES
+    private var focusModeEnabled = false
+    private var focusModeApps: Set<String> = emptySet()
 
     // --- CACHES ---
     private val recentlyRemovedKeys = ConcurrentHashMap<String, Long>()
@@ -255,6 +258,8 @@ class NotificationReaderService : NotificationListenerService() {
         serviceScope.launch { preferences.dndScheduleEnabledFlow.collectLatest { dndScheduleEnabled = it } }
         serviceScope.launch { preferences.dndScheduleStartMinutesFlow.collectLatest { dndScheduleStartMinutes = it } }
         serviceScope.launch { preferences.dndScheduleEndMinutesFlow.collectLatest { dndScheduleEndMinutes = it } }
+        serviceScope.launch { preferences.focusModeEnabledFlow.collectLatest { focusModeEnabled = it } }
+        serviceScope.launch { preferences.focusModeAppsFlow.collectLatest { focusModeApps = it } }
 
         // Listen for Theme Changes
         serviceScope.launch {
@@ -687,11 +692,23 @@ class NotificationReaderService : NotificationListenerService() {
         return isTimeWithinWindow(nowMinutes, dndScheduleStartMinutes, dndScheduleEndMinutes)
     }
 
+    /**
+     * True when Focus Mode is on and the app currently in the foreground is one the user
+     * picked (e.g. a game). Checked at the moment a notification arrives rather than via a
+     * background poll - one system query per notification is far cheaper than continuously
+     * tracking foreground state, and this is the only time it actually matters.
+     */
+    private fun isFocusModeActive(): Boolean {
+        if (!focusModeEnabled || focusModeApps.isEmpty()) return false
+        val foregroundPackage = getForegroundPackageName(this) ?: return false
+        return foregroundPackage in focusModeApps
+    }
+
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private suspend fun processStandardNotification(rawSbn: StatusBarNotification) {
         val manager = getSystemService(NotificationManager::class.java)
         val isSystemDndActive = manager.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL
-        val dndActive = isDndModeEnabled || (autoDetectDnd && isSystemDndActive) || isWithinDndSchedule()
+        val dndActive = isDndModeEnabled || (autoDetectDnd && isSystemDndActive) || isWithinDndSchedule() || isFocusModeActive()
 
         if (dndActive) {
             Log.d(TAG, "DND active. Skipping notification ${rawSbn.packageName}")
